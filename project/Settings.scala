@@ -21,7 +21,7 @@ object Settings {
     val scala = "2.11.11"
     val autowire = "0.2.5"
     val booPickle = "1.2.5"
-    val scalaJSReact = "1.0.1"
+    val scalaJSReact = "1.1.0"
     val scalaDom = "0.9.2"
 
     val uTest = "0.4.4"
@@ -33,6 +33,7 @@ object Settings {
     val mathjs = "3.13.3"
     val reactAce ="5.0.1"
     val brAce ="0.10.0"
+    val materialUI = "0.19.3"
   }
 
   /**
@@ -54,8 +55,7 @@ object Settings {
   /** Dependencies only used by the JS project (note the use of %%% instead of %%) */
   val scalajsDependencies = Def.setting(Seq(
     "com.github.japgolly.scalajs-react" %%% "core" % versions.scalaJSReact,
-//    "com.github.japgolly.scalajs-react" %%% "core" % versions.scalajsReact,
-//    "com.github.japgolly.scalajs-react" %%% "extra" % versions.scalajsReact,
+    "com.github.japgolly.scalajs-react" %%% "extra" % versions.scalaJSReact,
 //    "com.github.japgolly.scalacss" %%% "ext-react" % versions.scalaCSS,
 //    "me.chrons" %%% "diode" % versions.diode,
 //    "me.chrons" %%% "diode-react" % versions.diode,
@@ -78,6 +78,7 @@ object Settings {
     "bootstrap" -> versions.bootstrap,
     "font-awesome" -> versions.fontAwesome,
     "brace" -> versions.brAce,
-    "react-ace" -> versions.reactAce
+    "react-ace" -> versions.reactAce,
+    "material-ui" -> versions.materialUI
   )
 }

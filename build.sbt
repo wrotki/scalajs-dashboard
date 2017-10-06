@@ -3,7 +3,7 @@
 // https://github.com/scala-js/scala-js/issues/2797
 // https://github.com/japgolly/misc/tree/webpack
 
-name := "scalajs-spa-starter"
+name := "scalajs-spa-playground"
 
 version := "1.0"
 
