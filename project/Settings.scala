@@ -29,11 +29,12 @@ object Settings {
     val fontAwesome = "4.7.0"
     val scalajsScripts = "1.0.0"
     val react = "15.6.1"
+    val reactAddonsTransitionGroup = "15.6.2"
     val log4javascript = "1.4.15"
     val mathjs = "3.13.3"
     val reactAce ="5.0.1"
     val brAce ="0.10.0"
-    val materialUI = "0.19.3"
+    val elemental = "0.6.1"
   }
 
   /**
@@ -74,11 +75,12 @@ object Settings {
   val npmDependencies = Seq(
     "react" -> versions.react,
     "react-dom" -> versions.react,
+    "react-addons-css-transition-group" -> versions.reactAddonsTransitionGroup,
     "log4javascript" -> versions.log4javascript,
     "bootstrap" -> versions.bootstrap,
     "font-awesome" -> versions.fontAwesome,
     "brace" -> versions.brAce,
     "react-ace" -> versions.reactAce,
-    "material-ui" -> versions.materialUI
+    "elemental" -> versions.elemental
   )
 }
