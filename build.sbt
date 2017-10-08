@@ -50,7 +50,7 @@ lazy val client = (project in file("client"))
       npmDependencies in Compile ++= Settings.npmDependencies,
       // Use a different Webpack configuration file for production
       webpackConfigFile in fastOptJS := Some(baseDirectory.value / "my.custom.webpack.config.js"),
-      enableReloadWorkflow := false
+      version in webpack := "3.6.0"
   )
 
 lazy val server = (project in file("server"))
