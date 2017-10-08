@@ -11,3 +11,8 @@ module.exports = require('./scalajs.webpack.config');
 //  new UglifyJsPlugin({ sourceMap: module.exports.devtool === 'source-map' })
 //]);
 
+module.exports.module = {
+        loaders: [
+          { test: /\.less/, loader: 'less-loader' }
+        ]
+}
