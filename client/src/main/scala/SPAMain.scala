@@ -27,12 +27,15 @@ object SPAMain extends js.JSApp {
     ))()
 
     val button = Button.component(Button.props(size = "lg"))( <.div("Large button"))
+    //val css = Button.css(Button.props(size = "lg"))( <.div("Large button"))
 
     val component = <.div(
       <.div("BEFORE"),
       ace,
       <.div("AFTER"),
       button
+//      ,
+//      css
     )
 
     component.renderIntoDOM(dom.document.getElementById("ace"))
