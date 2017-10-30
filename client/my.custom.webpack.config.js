@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 
 module.exports = require('./scalajs.webpack.config');
-module.exports.entry["elementalcss"] = "/Users/mariusz/concurix/goworkspace/src/github.com/wrotki/scalajs-spa-playground/client/target/scala-2.11/scalajs-bundler/main/node_modules/elemental/less/elemental.less"
+//module.exports.entry["elementalcss"] = "/Users/mariusz/concurix/goworkspace/src/github.com/wrotki/scalajs-spa-playground/client/target/scala-2.11/scalajs-bundler/main/node_modules/elemental/less/elemental.less"
 
 console.log("Entry: ", JSON.stringify(module.exports.entry))
 
@@ -13,6 +13,15 @@ console.log("Entry: ", JSON.stringify(module.exports.entry))
 //module.exports.plugins = (module.exports.plugins || []).concat([
 //  new UglifyJsPlugin({ sourceMap: module.exports.devtool === 'source-map' })
 //]);
+
+//module.exports.plugins = (module.exports.plugins || []).concat([
+//  new webpack.LoaderOptionsPlugin({
+//    debug: true
+//  })])
+module.exports.plugins = [
+  new webpack.LoaderOptionsPlugin({
+    debug: true
+  })]
 
 module.exports.module = {
         loaders: [

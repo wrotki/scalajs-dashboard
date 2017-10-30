@@ -21,7 +21,8 @@ class Application @Inject() (implicit val config: Configuration, env: Environmen
 
   def index = Action {
     val scriptUrl = bundleUrl("client")
-    Ok(views.html.index("SPA Boilerplate",scriptUrl))
+    val cssUrl = cssBundleUrl
+    Ok(views.html.index("SPA Boilerplate",scriptUrl, cssUrl))
   }
 
   // https://github.com/scalacenter/scalajs-bundler/blob/master/sbt-web-scalajs-bundler/src/sbt-test/sbt-web-scalajs-bundler/play/server/src/main/scala/example/ExampleController.scala#L25-L30
@@ -30,6 +31,13 @@ class Application @Inject() (implicit val config: Configuration, env: Environmen
     Seq(s"$name-opt-bundle.js", s"$name-fastopt-bundle.js")
       .find(name => getClass.getResource(s"/public/$name") != null)
       .map(controllers.routes.Assets.versioned(_).url)
+  }
+
+  def cssBundleUrl: Option[String] = {
+    Seq(s"elementalcss-bundle.js")
+      .find(name => getClass.getResource(s"/public/elementalcss-bundle.js") != null)
+      .map(controllers.routes.Assets.versioned(_).url)
+    //Some(s"/assets/elementalcss-bundle.js")
   }
 
 //  def autowireApi(path: String) = Action.async(parse.raw) {

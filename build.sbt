@@ -67,7 +67,8 @@ lazy val server = (project in file("server"))
   pipelineStages in Assets := Seq(scalaJSPipeline),
   pipelineStages := Seq(digest, gzip),
   npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "bootstrap").*** }.value,
-  npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "font-awesome" ).*** }.value
+  npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "font-awesome" ).*** }.value,
+  npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "elementalcss-bundle.js" ).*** }.value
   // compress CSS
   // LessKeys.compress in Assets := true
 )

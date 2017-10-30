@@ -8,10 +8,12 @@ import scala.scalajs.js.{UndefOr, Function0 => JFn0}
 
 object Button {
 
-  // booooooo
-//  @JSImport("elemental","less/elemental.less")
-//  @js.native
-//  object ElementalCss extends js.Object
+  // bop
+  // https://github.com/scalacenter/scalajs-bundler/issues/62
+//  @JSImport("!style-loader!css-loader!rc-tabs/assets/index.css", JSImport.Default )
+  @JSImport("!style-loader!css-loader!less-loader!elemental/less/elemental.less", JSImport.Default)
+  @js.native
+  object ElementalCss extends js.Object
 
   @JSImport("elemental", "Button")
   @js.native
@@ -41,6 +43,7 @@ object Button {
   }
 
   val component = JsComponent[Props, Children.Varargs, Null](RawComponent)
+  val css2 = ElementalCss
   //val css = JsComponent[Props, Children.Varargs, Null](ElementalCss)
 }
 
