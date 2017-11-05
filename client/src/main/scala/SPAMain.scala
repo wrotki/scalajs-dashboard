@@ -28,29 +28,29 @@ object SPAMain extends js.JSApp {
       value = "function main(){ console.log(\"FooBar\"); }"
     ))()
 
-    val button = Button.component(Button.props(size = "lg"))( <.div("Large button"))
+    val button = Button.component(Button.props(size = "lg"))(<.div("Large button"))
     val col = Col.component(Col.props(sm = "1/3"))(button)
-    val row = Row.component(Row.props(size = "0"))(col,col,col)
+    val row = Row.component(Row.props(size = "0"))(col, col, col)
 
     val table = Table.component(Table.props(size = "0"))(
-        <.colgroup(
-          <.col(^.width := "50"),
-          <.col(^.width := ""),
-          <.col(^.width := "10%"),
-          <.col(^.width := "10%")
-        ),
-        <.thead(
-          <.tr(
-            <.th(
-              <.label(
-                <.input(^.`type` := "checkbox")
-              )
-            ),
-            <.th("User"),
-            <.th("Age"),
-            <.th("Gender Identity")
-          )
-        ),
+      <.colgroup(
+        <.col(^.width := "50"),
+        <.col(^.width := ""),
+        <.col(^.width := "10%"),
+        <.col(^.width := "10%")
+      ),
+      <.thead(
+        <.tr(
+          <.th(
+            <.label(
+              <.input(^.`type` := "checkbox")
+            )
+          ),
+          <.th("User"),
+          <.th("Age"),
+          <.th("Gender Identity")
+        )
+      ),
       <.tbody(
         <.tr(
           <.td(
@@ -59,7 +59,7 @@ object SPAMain extends js.JSApp {
             )
           ),
           <.td(
-            <.a( ^.href := "javascript:;")("Hanna Villarreal")
+            <.a(^.href := "javascript:;")("Hanna Villarreal")
           ),
           <.td(39),
           <.td("Female")
@@ -72,8 +72,8 @@ object SPAMain extends js.JSApp {
       ace,
       <.div("AFTER"),
       row
-//      ,
-//      css
+      //      ,
+      //      css
     )
 
     component.renderIntoDOM(dom.document.getElementById("ace"))
