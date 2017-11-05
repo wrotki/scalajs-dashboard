@@ -50,7 +50,21 @@ object SPAMain extends js.JSApp {
             <.th("Age"),
             <.th("Gender Identity")
           )
+        ),
+      <.tbody(
+        <.tr(
+          <.td(
+            <.label(
+              <.input(^.`type` := "checkbox")
+            )
+          ),
+          <.td(
+            <.a( ^.href := "javascript:;")("Hanna Villarreal")
+          ),
+          <.td(39),
+          <.td("Female")
         )
+      )
     )
 
     val component = <.div(
