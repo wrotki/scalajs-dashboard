@@ -4,12 +4,17 @@ import org.scalajs.dom
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.component.Js
 import japgolly.scalajs.react.component.Js.{MountedWithRawType, RawMounted}
+import japgolly.scalajs.react.vdom.TagOf
 import japgolly.scalajs.react.vdom.html_<^._
+import org.scalajs.dom.html.TableRow
+import org.scalajs.dom.raw.HTMLTableRowElement
 import spa.client.ace.Ace
 import spa.client.elemental.buttons.Button
 import spa.client.elemental.css.Table
 import spa.client.elemental.grid.{Col, Row}
 import spa.client.logger._
+
+import scala.collection.immutable
 
 @JSExport("SPAMain")
 object SPAMain extends js.JSApp {
@@ -32,6 +37,9 @@ object SPAMain extends js.JSApp {
     val col = Col.component(Col.props(sm = "1/3"))(button)
     val row = Row.component(Row.props(size = "0"))(col, col, col)
 
+    val trows = getDataRows
+
+
     val table = Table.component(Table.props(size = "0"))(
       <.colgroup(
         <.col(^.width := "50"),
@@ -52,18 +60,19 @@ object SPAMain extends js.JSApp {
         )
       ),
       <.tbody(
-        <.tr(
-          <.td(
-            <.label(
-              <.input(^.`type` := "checkbox")
-            )
-          ),
-          <.td(
-            <.a(^.href := "javascript:;")("Hanna Villarreal")
-          ),
-          <.td(39),
-          <.td("Female")
-        )
+//        <.tr(
+//          <.td(
+//            <.label(
+//              <.input(^.`type` := "checkbox")
+//            )
+//          ),
+//          <.td(
+//            <.a(^.href := "javascript:alert('Hanna Barbera');")("Hanna Villarreal")
+//          ),
+//          <.td(39),
+//          <.td("Female")
+//        ),
+        trows:_*
       )
     )
 
@@ -71,12 +80,29 @@ object SPAMain extends js.JSApp {
       <.div("BEFORE"),
       ace,
       <.div("AFTER"),
-      row
-      //      ,
-      //      css
+      row,
+      table
     )
 
     component.renderIntoDOM(dom.document.getElementById("ace"))
+  }
+
+  def getDataRows: Seq[TagOf[TableRow]] = {
+    val rows = 1 to 5 map { _ =>
+      <.tr(
+        <.td(
+          <.label(
+            <.input(^.`type` := "checkbox")
+          )
+        ),
+        <.td(
+          <.a(^.href := "javascript:alert('Hanna Barbera');")("Hanna Villarreal")
+        ),
+        <.td(39),
+        <.td("Female")
+      )
+    }
+    rows
   }
 }
 
