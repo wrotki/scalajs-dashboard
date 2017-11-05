@@ -7,6 +7,7 @@ import japgolly.scalajs.react.component.Js.{MountedWithRawType, RawMounted}
 import japgolly.scalajs.react.vdom.html_<^._
 import spa.client.ace.Ace
 import spa.client.elemental.buttons.Button
+import spa.client.elemental.grid.{Col, Row}
 import spa.client.logger._
 
 @JSExport("SPAMain")
@@ -27,13 +28,14 @@ object SPAMain extends js.JSApp {
     ))()
 
     val button = Button.component(Button.props(size = "lg"))( <.div("Large button"))
-    //val css = Button.css(Button.props(size = "lg"))( <.div("Large button"))
+    val col = Col.component(Col.props(sm = "1/3"))(button)
+    val row = Row.component(Row.props(size = "0"))(col,col,col)
 
     val component = <.div(
       <.div("BEFORE"),
       ace,
       <.div("AFTER"),
-      button
+      row
 //      ,
 //      css
     )
