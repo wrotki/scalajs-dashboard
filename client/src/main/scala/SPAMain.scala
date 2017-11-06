@@ -42,10 +42,12 @@ object SPAMain extends js.JSApp {
 
     val table = Table.component(Table.props(size = "0"))(
       <.colgroup(
-        <.col(^.width := "50"),
-        <.col(^.width := ""),
+        <.col(^.width := "10"),
         <.col(^.width := "10%"),
-        <.col(^.width := "10%")
+        <.col(^.width := "10%"),
+        <.col(^.width := "10%"),
+        <.col(^.width := "10%"),
+        <.col(^.width := "")
       ),
       <.thead(
         <.tr(
@@ -54,33 +56,24 @@ object SPAMain extends js.JSApp {
               <.input(^.`type` := "checkbox")
             )
           ),
-          <.th("User"),
-          <.th("Age"),
-          <.th("Gender Identity")
+          <.th("Package"),
+          <.th("BatchID"),
+          <.th("RequestID"),
+          <.th("Error"),
+          <.th("Log")
         )
       ),
       <.tbody(
-//        <.tr(
-//          <.td(
-//            <.label(
-//              <.input(^.`type` := "checkbox")
-//            )
-//          ),
-//          <.td(
-//            <.a(^.href := "javascript:alert('Hanna Barbera');")("Hanna Villarreal")
-//          ),
-//          <.td(39),
-//          <.td("Female")
-//        ),
         trows:_*
       )
     )
 
     val component = <.div(
+      /*
       <.div("BEFORE"),
       ace,
       <.div("AFTER"),
-      row,
+      row,*/
       table
     )
 
@@ -88,7 +81,10 @@ object SPAMain extends js.JSApp {
   }
 
   def getDataRows: Seq[TagOf[TableRow]] = {
-    val rows = 1 to 5 map { _ =>
+    val data = Seq( 0 -> "python2.7",1 -> "gcc5.5", 2 ->"mongodb", 3 ->"rails", 4 -> "ruby", 5 ->"mysql").seq
+    var rows = data map { t =>
+      val id = t._1
+      val pack = t._2
       <.tr(
         <.td(
           <.label(
@@ -96,10 +92,12 @@ object SPAMain extends js.JSApp {
           )
         ),
         <.td(
-          <.a(^.href := "javascript:alert('Hanna Barbera');")("Hanna Villarreal")
+          <.a(^.href := s"javascript:alert('$pack');")(pack)
         ),
-        <.td(39),
-        <.td("Female")
+        <.td("orange_centos_3Rb-4qYf"),
+        <.td(id),
+        <.td("Succcess"),
+        <.td("https://s3-us-west-2.amazonaws.com/scrambled-binaries-logs/logs/2016-09-20-11-40-46-2E3242BCDF4C7CE5")
       )
     }
     rows
