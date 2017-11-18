@@ -39,7 +39,6 @@ object SPAMain extends js.JSApp {
 
     val trows = getDataRows
 
-
     val table = Table.component(Table.props(size = "0"))(
       <.colgroup(
         <.col(^.width := "10"),
