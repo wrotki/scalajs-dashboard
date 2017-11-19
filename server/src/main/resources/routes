@@ -10,7 +10,7 @@ GET     /assets/*file                     controllers.Assets.versioned(path="/pu
 GET     /assets/*file                     controllers.Assets.at(path="/public", file)
 
 # Autowire calls
-#POST    /api/*path                        controllers.Application.autowireApi(path: String)
+POST    /api/*path                        controllers.Application.autowireApi(path: String)
 
 # Logging
 # POST /logging                             controllers.Application.logging

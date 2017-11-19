@@ -6,6 +6,7 @@ import boopickle.Default._
 import com.google.inject.Inject
 import play.api.{Configuration, Environment}
 import play.api.mvc._
+import tableaccess.ConfigServer
 //import services.ApiService
 //import spatutorial.shared.Api
 
@@ -39,6 +40,24 @@ class Application @Inject() (implicit val config: Configuration, env: Environmen
       .map(controllers.routes.Assets.versioned(_).url)
     //Some(s"/assets/elementalcss-bundle.js")
   }
+
+  def autowireApi(path: String) = Action.async(parse.raw) {
+    implicit request =>
+      println(s"Request path: $path")
+
+      // get the request body as ByteString
+      val b = request.body.asBytes(parse.UNLIMITED).get
+
+      // call Autowire route
+      ConfigServer.routes(
+        autowire.Core.Request(path.split("/"), Unpickle[Map[String, ByteBuffer]].fromBytes(b.asByteBuffer))
+      ).map(buffer => {
+        val data = Array.ofDim[Byte](buffer.remaining())
+        buffer.get(data)
+        Ok(data)
+      })
+  }
+
 
 //  def autowireApi(path: String) = Action.async(parse.raw) {
 //    implicit request =>
