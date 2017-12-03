@@ -34,6 +34,7 @@ lazy val sharedJS = shared.js.settings(name := "sharedJS")
 // lazy val client = project.enablePlugins(ScalaJSPlugin, ScalaJSWeb, ScalaJSBundlerPlugin)
 lazy val client = (project in file("client"))
     .enablePlugins(ScalaJSBundlerPlugin, ScalaJSWeb)
+    .dependsOn(sharedJS)
     .settings(commonSettings: _*)
     .settings(
       scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },

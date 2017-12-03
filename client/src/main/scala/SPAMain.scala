@@ -15,6 +15,11 @@ import spa.client.elemental.grid.{Col, Row}
 import spa.client.logger._
 
 import scala.collection.immutable
+import scala.concurrent.ExecutionContext.Implicits.global
+import boopickle.Default._
+import autowire._
+import config.ConfigApi
+import tableaccess.ConfigServer
 
 @JSExport("SPAMain")
 object SPAMain extends js.JSApp {
@@ -77,6 +82,10 @@ object SPAMain extends js.JSApp {
     )
 
     component.renderIntoDOM(dom.document.getElementById("ace"))
+
+    ConfigServer[ConfigApi].getConfig("foo","bar").call().foreach { todos =>
+      println(s"Got some things to do $todos")
+    }
   }
 
   def getDataRows: Seq[TagOf[TableRow]] = {

@@ -4,9 +4,9 @@ import java.nio.ByteBuffer
 
 import boopickle.Default._
 import com.google.inject.Inject
+import config.{ConfigApi, ConfigApiImpl}
 import play.api.{Configuration, Environment}
 import play.api.mvc._
-import tableaccess.ConfigServer
 //import services.ApiService
 //import spatutorial.shared.Api
 
@@ -58,8 +58,16 @@ class Application @Inject() (implicit val config: Configuration, env: Environmen
       })
   }
 
+  object ConfigServer extends autowire.Server[ByteBuffer, Pickler, Pickler]{
 
-//  def autowireApi(path: String) = Action.async(parse.raw) {
+    override def read[R: Pickler](p: ByteBuffer) = Unpickle[R].fromBytes(p)
+    override def write[R: Pickler](r: R) = Pickle.intoBytes(r)
+
+    val routes = ConfigServer.route[ConfigApi](ConfigApiImpl)
+  }
+
+
+  //  def autowireApi(path: String) = Action.async(parse.raw) {
 //    implicit request =>
 //      println(s"Request path: $path")
 //
