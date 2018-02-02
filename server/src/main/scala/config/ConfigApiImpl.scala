@@ -1,6 +1,6 @@
 package config
 
-import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.{AWSCredentialsProvider, BasicAWSCredentials, DefaultAWSCredentialsProviderChain}
 import com.amazonaws.services.dynamodbv2._
 import com.github.dwhjames.awswrap.dynamodb.{AmazonDynamoDBScalaClient, AmazonDynamoDBScalaMapper}
 import tableaccess.FileMetrics
@@ -13,8 +13,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 object ConfigApiImpl extends ConfigApi {
 
   val client = {
-    val jClient = new AmazonDynamoDBAsyncClient(new BasicAWSCredentials("FAKE_ACCESS_KEY", "FAKE_SECRET_KEY"))
-    jClient.setEndpoint("http://localhost:8000")
+//    val jClient = new AmazonDynamoDBAsyncClient(new BasicAWSCredentials("FAKE_ACCESS_KEY", "FAKE_SECRET_KEY"))
+    val jClient = new AmazonDynamoDBAsyncClient(new DefaultAWSCredentialsProviderChain() )
+//    val jClient = AmazonDynamoDBAsyncClientBuilder.defaultClient()
+    //jClient.setEndpoint("http://localhost:8000")
+
+    jClient.setEndpoint("https://dynamodb.us-west-2.amazonaws.com")
 
     new AmazonDynamoDBScalaClient(jClient)
   }

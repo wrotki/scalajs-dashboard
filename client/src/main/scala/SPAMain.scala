@@ -86,6 +86,9 @@ object SPAMain extends js.JSApp {
     ConfigServer[ConfigApi].getConfig("foo","bar").call().foreach { todos =>
       println(s"Got some things to do $todos")
     }
+    ConfigServer[ConfigApi].getFileMetrics().call().foreach { fms =>
+      println(s"FileMetrics: $fms")
+    }
   }
 
   def getDataRows: Seq[TagOf[TableRow]] = {

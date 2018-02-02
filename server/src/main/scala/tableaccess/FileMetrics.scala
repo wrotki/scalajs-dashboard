@@ -33,7 +33,7 @@ object FileMetrics {
 
   implicit object fileMetricsSerializer extends DynamoDBSerializer[FileMetrics] {
 
-    override val tableName = FileMetrics.tableName
+    override val tableName = "BigBang.staging.FileMetrics"
     override val hashAttributeName = Attributes.packageName
     override val rangeAttributeName = Some(Attributes.filename)
 
