@@ -37,10 +37,10 @@ object SPAMain extends js.JSApp {
     }
 
     def start = Callback.future {
-      println(s"calling getFileMetrics ...")
+//      println(s"calling getFileMetrics ...")
       val ret = ConfigServer[ConfigApi].getFileMetrics().call() map {
         res => {
-          println(s"calling getFileMetrics complete!!!: $res")
+//          println(s"calling getFileMetrics complete!!!: $res")
           updateFileMetrics(res)
         }
       }
@@ -49,7 +49,7 @@ object SPAMain extends js.JSApp {
 
     def render(s: State) = {
       // <.div("Seconds elapsed: ", s.secondsElapsed)
-      println(s"render: $s")
+//      println(s"render: $s")
       val rows = fileMetricsRows(s.fileMetrics)
       <.tbody(
         rows: _*
@@ -93,11 +93,12 @@ object SPAMain extends js.JSApp {
             <.input(^.`type` := "checkbox")
           )
         ),
-        <.th("Package"),
-        <.th("BatchID"),
-        <.th("RequestID"),
-        <.th("Error"),
-        <.th("Log")
+        <.th("ID"),
+        <.th("Filename"),
+        <.th("Success"),
+        <.th("Fail"),
+        <.th("LastResult"),
+        <.th("Error Message")
       )
     ),
     Rows()
@@ -107,11 +108,10 @@ object SPAMain extends js.JSApp {
   )
 
   val component = <.div(
-
-    <.div("BEFORE"),
-    ace,
-    <.div("AFTER"),
-    row,
+//    <.div("BEFORE"),
+//    ace,
+//    <.div("AFTER"),
+//    row,
     table
   )
 
@@ -126,30 +126,42 @@ object SPAMain extends js.JSApp {
 
 
 //    val data = fileMetrics zip Stream.from(0) map { fm => (fm._2, fm._1.filename) } take 10
-    println(s"foreach sfm:")
-    sfm foreach println
+//    println(s"foreach sfm:")
+//    sfm foreach println
 
-    val data = sfm take 100 zip (0 to 100) map { fm => (fm._2, fm._1.filename) }
-    println(s"foreach data:")
-    data foreach println
-    println(s"getdatarows: $data")
+//    val data = (0 to 100) zip sfm take 100 map { fm => (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastResult) }
+    val debianPkgs = sfm filter { _.filename endsWith ".deb"  } sortBy { _.filename  }
+    val data = Stream.from(0) zip debianPkgs map { fm => (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastResult) }
+//    println(s"foreach data:")
+//    data foreach println
+//    println(s"getdatarows: $data")
 
+    val cls = (success: Long) => if( success > 0 ) { "default" } else { "danger" }
     var rows = data map { t =>
       val id = t._1
-      val pack = t._2
+      val file = t._2
+      val success = t._3
+      val fail = t._4
+      val lastResult = t._5
+      val bgcolor = if( success > 0 ) { "white" } else { "red" }
       <.tr(
+        ^.backgroundColor := bgcolor ,
+        ^.color := "darkbrown",
         <.td(
           <.label(
             <.input(^.`type` := "checkbox")
-          )
+          ),
+          ^.cls := cls(success)
         ),
-        <.td(
-          <.a(^.href := s"javascript:alert('$pack');")(pack)
-        ),
-        <.td("orange_centos_3Rb-4qYf"),
         <.td(id),
-        <.td("Success"),
-        <.td("https://s3-us-west-2.amazonaws.com/scrambled-binaries-logs/logs/2016-09-20-11-40-46-2E3242BCDF4C7CE5")
+        <.td(
+//          <.a(^.href := s"javascript:alert('$file');")(file)
+          file
+        ),
+        <.td(success),
+        <.td(fail),
+        <.td(lastResult),
+        <.td("TODO: Error message goes here")
       )
     }
     rows
