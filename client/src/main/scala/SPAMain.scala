@@ -1,3 +1,4 @@
+
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSImport}
 import org.scalajs.dom
@@ -21,12 +22,46 @@ import autowire._
 import config.ConfigApi
 import tableaccess.{ConfigServer, FileMetrics}
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
+
 
 @JSExport("SPAMain")
 object SPAMain extends js.JSApp {
 
-  var fileMetrics: Seq[FileMetrics] = Seq()
+  case class State(fileMetrics: Seq[FileMetrics])
+
+  class Backend($: BackendScope[Unit, State]) {
+
+    def updateFileMetrics (fileMetrics: Seq[FileMetrics]): Callback = {
+      $.setState(State(fileMetrics))
+    }
+
+    def start = Callback.future {
+      println(s"calling getFileMetrics ...")
+      val ret = ConfigServer[ConfigApi].getFileMetrics().call() map {
+        res => {
+          println(s"calling getFileMetrics complete!!!: $res")
+          updateFileMetrics(res)
+        }
+      }
+      ret
+    }
+
+    def render(s: State) = {
+      // <.div("Seconds elapsed: ", s.secondsElapsed)
+      println(s"render: $s")
+      val rows = fileMetricsRows(s.fileMetrics)
+      <.tbody(
+        rows: _*
+      )
+    }
+  }
+
+  val Rows = ScalaComponent.builder[Unit]("Rows")
+    .initialState(State(Seq()))
+    .renderBackend[Backend]
+    .componentDidMount(_.backend.start)
+    .build
 
   val ace = Ace.component(Ace.props(
     mode = "scala",
@@ -41,8 +76,6 @@ object SPAMain extends js.JSApp {
   val button = Button.component(Button.props(size = "lg"))(<.div("Large button"))
   val col = Col.component(Col.props(sm = "1/3"))(button)
   val row = Row.component(Row.props(size = "0"))(col, col, col)
-
-  val trows = getDataRows
 
   val table = Table.component(Table.props(size = "0"))(
     <.colgroup(
@@ -67,9 +100,10 @@ object SPAMain extends js.JSApp {
         <.th("Log")
       )
     ),
-    <.tbody(
-      trows:_*
-    )
+    Rows()
+//    <.tbody(
+//      trows:_*
+//    )
   )
 
   val component = <.div(
@@ -81,42 +115,22 @@ object SPAMain extends js.JSApp {
     table
   )
 
-
   @JSExport
   def main(): Unit = {
     log.warn("Application starting")
-
     component.renderIntoDOM(dom.document.getElementById("ace"))
-
-    loadGrid
-
-//    ConfigServer[ConfigApi].getConfig("foo","bar").call().foreach { todos =>
-//      println(s"Got some things to do $todos")
-//    }
-//    ConfigServer[ConfigApi].getFileMetrics().call().foreach { fms =>
-//      println(s"FileMetrics: $fms")
-//    }
   }
 
-  def loadGrid = {
-    println(s"calling getFileMetrics ...")
-    ConfigServer[ConfigApi].getFileMetrics().call().foreach {
-      res => {
-        println(s"calling getFileMetrics complete!!!")
-        fileMetrics = res
-        val data = fileMetrics take 100 zip (0 to 100) map { fm => (fm._2, fm._1.filename) }
-        data foreach println
-        component.renderIntoDOM(dom.document.getElementById("ace"))
-      }
-    }
-  }
-
-  def getDataRows: Seq[TagOf[TableRow]] = {
+  def fileMetricsRows(sfm: Seq[FileMetrics]): Seq[TagOf[TableRow]] = {
 //    val data = Seq( 0 -> "python2.7",1 -> "gcc5.5", 2 ->"mongodb", 3 ->"rails", 4 -> "ruby", 5 ->"mysql").seq
 
 
 //    val data = fileMetrics zip Stream.from(0) map { fm => (fm._2, fm._1.filename) } take 10
-    val data = fileMetrics take 100 zip (0 to 100) map { fm => (fm._2, fm._1.filename) }
+    println(s"foreach sfm:")
+    sfm foreach println
+
+    val data = sfm take 100 zip (0 to 100) map { fm => (fm._2, fm._1.filename) }
+    println(s"foreach data:")
     data foreach println
     println(s"getdatarows: $data")
 
@@ -134,7 +148,7 @@ object SPAMain extends js.JSApp {
         ),
         <.td("orange_centos_3Rb-4qYf"),
         <.td(id),
-        <.td("Succcess"),
+        <.td("Success"),
         <.td("https://s3-us-west-2.amazonaws.com/scrambled-binaries-logs/logs/2016-09-20-11-40-46-2E3242BCDF4C7CE5")
       )
     }
