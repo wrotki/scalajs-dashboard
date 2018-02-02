@@ -1,5 +1,0 @@
-package tableaccess
-
-class BoohBah {
-
-}

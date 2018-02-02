@@ -56,7 +56,17 @@ object Settings {
   val jvmDependencies = Def.setting(Seq(
     "com.vmunier" %% "scalajs-scripts" % versions.scalajsScripts,
     "com.lihaoyi" %% "utest" % versions.uTest % Test,
-    "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.231"
+    "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.231",
+
+    /**
+      * https://bitbucket.org/atlassian/aws-scala
+      */
+//    "io.atlassian.aws-scala" %% "aws-scala"  % "7.0.0",
+
+    /**
+      * https://dwhjames.github.io/aws-wrap/
+      */
+    "com.github.dwhjames" %% "aws-wrap" % "0.8.0"
   ))
 
   /** Dependencies only used by the JS project (note the use of %%% instead of %%) */

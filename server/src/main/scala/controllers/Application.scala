@@ -67,23 +67,6 @@ class Application @Inject() (implicit val config: Configuration, env: Environmen
   }
 
 
-  //  def autowireApi(path: String) = Action.async(parse.raw) {
-//    implicit request =>
-//      println(s"Request path: $path")
-//
-//      // get the request body as ByteString
-//      val b = request.body.asBytes(parse.UNLIMITED).get
-//
-//      // call Autowire route
-//      Router.route[Api](apiService)(
-//        autowire.Core.Request(path.split("/"), Unpickle[Map[String, ByteBuffer]].fromBytes(b.asByteBuffer))
-//      ).map(buffer => {
-//        val data = Array.ofDim[Byte](buffer.remaining())
-//        buffer.get(data)
-//        Ok(data)
-//      })
-//  }
-
   def logging = Action(parse.anyContent) {
     implicit request =>
       request.body.asJson.foreach { msg =>

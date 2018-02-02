@@ -73,11 +73,11 @@ object SPAMain extends js.JSApp {
     )
 
     val component = <.div(
-      /*
+
       <.div("BEFORE"),
       ace,
       <.div("AFTER"),
-      row,*/
+      row,
       table
     )
 
