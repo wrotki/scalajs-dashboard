@@ -78,6 +78,7 @@ object SPAMain extends js.JSApp {
 
     def render(s: State) = {
       val rows = fileMetricsRows(s.fileMetrics)
+      val stats = fileMetricsStats(s.fileMetrics)
       Table.component(Table.props(size = "0"))(
         <.colgroup(
           <.col(^.width := "10"),
@@ -86,6 +87,21 @@ object SPAMain extends js.JSApp {
           <.col(^.width := "10%"),
           <.col(^.width := "10%"),
           <.col(^.width := "")
+        ),
+        <.thead(
+          <.tr(
+            <.th(
+              <.label(
+                <.input(^.`type` := "checkbox")
+              )
+            ),
+            <.th(""),
+            <.th(""),
+            <.th("Success"),
+            <.th(stats._1),
+            <.th("Fail"),
+            <.th(stats._2)
+          )
         ),
         <.thead(
           <.tr(
@@ -123,7 +139,11 @@ object SPAMain extends js.JSApp {
   val col = Col.component(Col.props(sm = "1/3"))(button)
   val row = Row.component(Row.props(size = "0"))(col, col, col)
 
-
+  def fileMetricsStats(sfm: Seq[FileMetrics]) = {
+    val successCount = sfm count{ _.buildSuccess > 0 }
+    val failCount = sfm count{ _.buildFail > 0 }
+    (successCount, failCount)
+  }
 
   def fileMetricsRows(sfm: Seq[FileMetrics]): Seq[TagOf[TableRow]] = {
     val debianPkgs = sfm filter {
