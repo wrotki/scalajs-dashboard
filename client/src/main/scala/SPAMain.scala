@@ -30,6 +30,7 @@ import scala.concurrent.Future
 @JSExport("SPAMain")
 object SPAMain extends js.JSApp {
 
+  // Test going private
   @JSExport
   def main(): Unit = {
     log.warn("Application starting")
