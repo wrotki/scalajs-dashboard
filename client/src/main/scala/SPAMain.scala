@@ -44,46 +44,18 @@ object SPAMain extends js.JSApp {
       //    ace,
       //    <.div("AFTER"),
       //    row,
-      table
+      table()
     )
   }
 
-  def table: UnmountedWithRawType[Table.Props, Null, RawMounted] = {
+  def table = {
     val rows = ScalaComponent.builder[Unit]("Rows")
       .initialState(State(Seq()))
       .renderBackend[Backend]
       .componentDidMount(_.backend.start)
       .build
 
-    Table.component(Table.props(size = "0"))(
-      <.colgroup(
-        <.col(^.width := "10"),
-        <.col(^.width := "10%"),
-        <.col(^.width := "10%"),
-        <.col(^.width := "10%"),
-        <.col(^.width := "10%"),
-        <.col(^.width := "")
-      ),
-      <.thead(
-        <.tr(
-          <.th(
-            <.label(
-              <.input(^.`type` := "checkbox")
-            )
-          ),
-          <.th("ID"),
-          <.th("Filename"),
-          <.th("Success"),
-          <.th("Fail"),
-          <.th("LastResult"),
-          <.th("Error Message")
-        )
-      ),
-      rows()
-      //    <.tbody(
-      //      trows:_*
-      //    )
-    )
+      rows
   }
 
 
@@ -106,8 +78,33 @@ object SPAMain extends js.JSApp {
 
     def render(s: State) = {
       val rows = fileMetricsRows(s.fileMetrics)
-      <.tbody(
-        rows: _*
+      Table.component(Table.props(size = "0"))(
+        <.colgroup(
+          <.col(^.width := "10"),
+          <.col(^.width := "10%"),
+          <.col(^.width := "10%"),
+          <.col(^.width := "10%"),
+          <.col(^.width := "10%"),
+          <.col(^.width := "")
+        ),
+        <.thead(
+          <.tr(
+            <.th(
+              <.label(
+                <.input(^.`type` := "checkbox")
+              )
+            ),
+            <.th("ID"),
+            <.th("Filename"),
+            <.th("Success"),
+            <.th("Fail"),
+            <.th("LastResult"),
+            <.th("Error Message")
+          )
+        ),
+        <.tbody(
+          rows: _*
+        )
       )
     }
   }
