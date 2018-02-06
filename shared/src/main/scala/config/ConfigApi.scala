@@ -2,7 +2,8 @@ package config
 
 import tableaccess.FileMetrics
 
-trait ConfigApi{
+trait ConfigApi {
   def getConfig(service: String, deployment: String): String
+
   def getFileMetrics(): Seq[FileMetrics]
 }

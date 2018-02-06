@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 // https://github.com/lihaoyi/workbench-example-app/blob/autowire/example/js/src/main/scala/example/ScalaJSExample.scala
 // https://github.com/ochrons/scalajs-spa-tutorial/blob/master/doc/en/autowire-and-boopickle.md
 // client-side implementation, and call-site
-object ConfigServer extends autowire.Client[ByteBuffer, Pickler, Pickler]{
+object ConfigServer extends autowire.Client[ByteBuffer, Pickler, Pickler] {
 
   override def doCall(req: Request): Future[ByteBuffer] = {
     dom.ext.Ajax.post(
@@ -24,6 +24,7 @@ object ConfigServer extends autowire.Client[ByteBuffer, Pickler, Pickler]{
   }
 
   override def read[Result: Pickler](p: ByteBuffer) = Unpickle[Result].fromBytes(p)
+
   override def write[Result: Pickler](r: Result) = Pickle.intoBytes(r)
 }
 

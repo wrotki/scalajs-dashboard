@@ -8,7 +8,7 @@ import java.util._
 object ConfigsTable {
 
   val table_name = "BigBang-Configs"
-  val key_to_get = new HashMap[String,AttributeValue]
+  val key_to_get = new HashMap[String, AttributeValue]
 
   key_to_get.put("ServiceName", new AttributeValue("manager"))
   key_to_get.put("Deployment", new AttributeValue("mborsa"))

@@ -13,10 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 object ConfigApiImpl extends ConfigApi {
 
   val client = {
-//    val jClient = new AmazonDynamoDBAsyncClient(new BasicAWSCredentials("FAKE_ACCESS_KEY", "FAKE_SECRET_KEY"))
-    val jClient = new AmazonDynamoDBAsyncClient(new DefaultAWSCredentialsProviderChain() )
-//    val jClient = AmazonDynamoDBAsyncClientBuilder.defaultClient()
-    //jClient.setEndpoint("http://localhost:8000")
+    val jClient = new AmazonDynamoDBAsyncClient(new DefaultAWSCredentialsProviderChain())
 
     jClient.setEndpoint("https://dynamodb.us-west-2.amazonaws.com")
 
@@ -25,23 +22,14 @@ object ConfigApiImpl extends ConfigApi {
 
   val mapper = AmazonDynamoDBScalaMapper(client)
 
-  val fileMetrics =  mapper.scan[FileMetrics]()
-
-//  val queryResult =       mapper.query[FileMetrics](
-//    FileMetrics.globalSecondaryIndexName,
-//    FileMetrics.Attributes.gameTitle,
-//    "Galaxy Invaders",
-//    Some(FileMetrics.Attributes.topScore -> QueryCondition.greaterThan(0)),
-//    false,
-//    10 // top ten high scores
-//  )
+  val fileMetrics = mapper.scan[FileMetrics]()
 
   override def getConfig(service: String, deployment: String): String =
     """{
-    |  "foo": "bar",
-    |  "active": false
-    |}
-    |"""
+      |  "foo": "bar",
+      |  "active": false
+      |}
+      |"""
       .stripMargin
 
   override def getFileMetrics(): Seq[FileMetrics] = Await.result(fileMetrics, 300 seconds)

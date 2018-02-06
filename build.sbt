@@ -22,10 +22,10 @@ lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
   .settings(
     scalaVersion := Settings.versions.scala
   )
-  .jsConfigure(_.enablePlugins(ScalaJSWeb ,WebScalaJSBundlerPlugin))
-  //.jsConfigure(_.enablePlugins(ScalaJSWeb ,WebScalaJSBundlerPlugin))
-  // set up settings specific to the JS project
-  //enablePlugins(WebScalaJSBundlerPlugin)
+  .jsConfigure(_.enablePlugins(ScalaJSWeb, WebScalaJSBundlerPlugin))
+//.jsConfigure(_.enablePlugins(ScalaJSWeb ,WebScalaJSBundlerPlugin))
+// set up settings specific to the JS project
+//enablePlugins(WebScalaJSBundlerPlugin)
 
 lazy val sharedJVM = shared.jvm.settings(name := "sharedJVM")
 
@@ -33,25 +33,29 @@ lazy val sharedJS = shared.js.settings(name := "sharedJS")
 
 // lazy val client = project.enablePlugins(ScalaJSPlugin, ScalaJSWeb, ScalaJSBundlerPlugin)
 lazy val client = (project in file("client"))
-    .enablePlugins(ScalaJSBundlerPlugin, ScalaJSWeb)
-    .dependsOn(sharedJS)
-    .settings(commonSettings: _*)
-    .settings(
-      scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
-      //scalaJSLinkerConfig ~= { _.withRelativizeSourceMapBase(None) },
-      scalaJSLinkerConfig ~= { _.withSourceMap(false) },
-      //scalaJSModuleKind := ModuleKind.CommonJSModule,
-      name := "client",
-      version := Settings.version,
-      scalaVersion := Settings.versions.scala,
-      scalacOptions ++= Settings.scalacOptions,
-      libraryDependencies ++= Settings.scalajsDependencies.value,
-      jsDependencies ++= Settings.jsDependencies.value,
-      useYarn := true,
-      npmDependencies in Compile ++= Settings.npmDependencies,
-      // Use a different Webpack configuration file for production
-      webpackConfigFile in fastOptJS := Some(baseDirectory.value / "my.custom.webpack.config.js"),
-      version in webpack := "3.6.0"
+  .enablePlugins(ScalaJSBundlerPlugin, ScalaJSWeb)
+  .dependsOn(sharedJS)
+  .settings(commonSettings: _*)
+  .settings(
+    scalaJSLinkerConfig ~= {
+      _.withModuleKind(ModuleKind.CommonJSModule)
+    },
+    //scalaJSLinkerConfig ~= { _.withRelativizeSourceMapBase(None) },
+    scalaJSLinkerConfig ~= {
+      _.withSourceMap(false)
+    },
+    //scalaJSModuleKind := ModuleKind.CommonJSModule,
+    name := "client",
+    version := Settings.version,
+    scalaVersion := Settings.versions.scala,
+    scalacOptions ++= Settings.scalacOptions,
+    libraryDependencies ++= Settings.scalajsDependencies.value,
+    jsDependencies ++= Settings.jsDependencies.value,
+    useYarn := true,
+    npmDependencies in Compile ++= Settings.npmDependencies,
+    // Use a different Webpack configuration file for production
+    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "my.custom.webpack.config.js"),
+    version in webpack := "3.6.0"
   )
 
 lazy val server = (project in file("server"))
@@ -60,19 +64,19 @@ lazy val server = (project in file("server"))
   .dependsOn(sharedJVM)
   .settings(commonSettings: _*)
   .settings(
-  scalaVersion := Settings.versions.scala,
-  libraryDependencies ++= Settings.jvmDependencies.value,
-  // yes, we want to package JS dependencies
-  skip in packageJSDependencies := false,
-  scalaJSProjects := Seq(client),
-  pipelineStages in Assets := Seq(scalaJSPipeline),
-  pipelineStages := Seq(digest, gzip),
-  npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "bootstrap").*** }.value,
-  npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "font-awesome" ).*** }.value,
-  npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "elementalcss-bundle.js" ).*** }.value
-  // compress CSS
-  // LessKeys.compress in Assets := true
-)
+    scalaVersion := Settings.versions.scala,
+    libraryDependencies ++= Settings.jvmDependencies.value,
+    // yes, we want to package JS dependencies
+    skip in packageJSDependencies := false,
+    scalaJSProjects := Seq(client),
+    pipelineStages in Assets := Seq(scalaJSPipeline),
+    pipelineStages := Seq(digest, gzip),
+    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "bootstrap").*** }.value,
+    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "font-awesome").*** }.value,
+    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "elementalcss-bundle.js").*** }.value
+    // compress CSS
+    // LessKeys.compress in Assets := true
+  )
 
 resolvers += Resolver.bintrayRepo("dwhjames", "maven")
 

@@ -37,8 +37,8 @@ object Settings {
     val styleLoader = "0.19.0"
     val log4javascript = "1.4.15"
     val mathjs = "3.13.3"
-    val reactAce ="5.0.1"
-    val brAce ="0.10.0"
+    val reactAce = "5.0.1"
+    val brAce = "0.10.0"
     val elemental = "0.6.1"
   }
 
@@ -61,7 +61,7 @@ object Settings {
     /**
       * https://bitbucket.org/atlassian/aws-scala
       */
-//    "io.atlassian.aws-scala" %% "aws-scala"  % "7.0.0",
+    //    "io.atlassian.aws-scala" %% "aws-scala"  % "7.0.0",
 
     /**
       * https://dwhjames.github.io/aws-wrap/
@@ -73,19 +73,19 @@ object Settings {
   val scalajsDependencies = Def.setting(Seq(
     "com.github.japgolly.scalajs-react" %%% "core" % versions.scalaJSReact,
     "com.github.japgolly.scalajs-react" %%% "extra" % versions.scalaJSReact,
-//    "com.github.japgolly.scalacss" %%% "ext-react" % versions.scalaCSS,
-//    "me.chrons" %%% "diode" % versions.diode,
-//    "me.chrons" %%% "diode-react" % versions.diode,
+    //    "com.github.japgolly.scalacss" %%% "ext-react" % versions.scalaCSS,
+    //    "me.chrons" %%% "diode" % versions.diode,
+    //    "me.chrons" %%% "diode-react" % versions.diode,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
     "com.lihaoyi" %%% "utest" % versions.uTest % Test
   ))
 
 
   val jsDependencies = Def.setting(Seq(
-//    "org.webjars" % "font-awesome" % versions.fontAwesome % Provided,
-//    "org.webjars" % "bootstrap" % versions.bootstrap % Provided,
-//    "org.webjars.bower" % "react" % versions.react / "react-with-addons.js" minified "react-with-addons.min.js" commonJSName "React",
-//    "org.webjars.bower" % "react" % versions.react / "react-dom.js" minified "react-dom.min.js" dependsOn "react-with-addons.js" commonJSName "ReactDOM"
+    //    "org.webjars" % "font-awesome" % versions.fontAwesome % Provided,
+    //    "org.webjars" % "bootstrap" % versions.bootstrap % Provided,
+    //    "org.webjars.bower" % "react" % versions.react / "react-with-addons.js" minified "react-with-addons.min.js" commonJSName "React",
+    //    "org.webjars.bower" % "react" % versions.react / "react-dom.js" minified "react-dom.min.js" dependsOn "react-with-addons.js" commonJSName "ReactDOM"
   ))
 
   val npmDependencies = Seq(
