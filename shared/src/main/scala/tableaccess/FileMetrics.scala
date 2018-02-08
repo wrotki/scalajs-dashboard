@@ -7,6 +7,7 @@ case class FileMetrics(
                         filename: String,
                         lastBuildAttempt: String,
                         lastResult: String,
+                        lastError: String,
                         packageName: String,
                         revision: Long,
                         timestamp: String

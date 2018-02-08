@@ -76,9 +76,15 @@ object SPAMain extends js.JSApp {
       ret
     }
 
+    def filterByDistro (sfm: Seq[FileMetrics]): Seq[FileMetrics] = {
+      sfm filter {
+        _.filename endsWith ".rpm"
+      }
+    }
+
     def render(s: State) = {
-      val rows = fileMetricsRows(s.fileMetrics)
-      val stats = fileMetricsStats(s.fileMetrics)
+      val rows = fileMetricsRows(filterByDistro(s.fileMetrics))
+      val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
       Table.component(Table.props(size = "0"))(
         <.colgroup(
           <.col(^.width := "10"),
@@ -115,7 +121,7 @@ object SPAMain extends js.JSApp {
             <.th("Success"),
             <.th("Fail"),
             <.th("LastResult"),
-            <.th("Error Message")
+            <.th("Last Error")
           )
         ),
         <.tbody(
@@ -146,13 +152,11 @@ object SPAMain extends js.JSApp {
   }
 
   def fileMetricsRows(sfm: Seq[FileMetrics]): Seq[TagOf[TableRow]] = {
-    val debianPkgs = sfm filter {
-      _.filename endsWith ".rpm"
-    } sortBy {
+    val debianPkgs =  sfm sortBy {
       _.filename
     }
     val data = Stream.from(0) zip debianPkgs map { fm =>
-      (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastResult)
+      (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastResult, fm._2.lastError)
     }
 
     val cls = (success: Long) => if (success > 0) {
@@ -166,6 +170,7 @@ object SPAMain extends js.JSApp {
       val success = t._3
       val fail = t._4
       val lastResult = t._5
+      val lastError = t._6
       val bgcolor = if (success > 0) {
         "white"
       } else {
@@ -188,7 +193,7 @@ object SPAMain extends js.JSApp {
         <.td(success),
         <.td(fail),
         <.td(lastResult),
-        <.td("TODO: Error message goes here")
+        <.td(lastError)
       )
     }
     rows
