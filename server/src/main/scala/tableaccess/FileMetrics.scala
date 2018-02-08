@@ -9,7 +9,7 @@ case class FileMetrics(
                         downloads: Long,
                         filename: String,
                         lastBuildAttempt: String,
-                        lastResult: String,
+                        lastBuildResult: String,
                         lastError: String,
                         lastBatchID: String,
                         lastRequestID: Long,
@@ -29,7 +29,7 @@ object FileMetrics {
     val downloads = "Downloads"
     val filename = "Filename"
     val lastBuildAttempt = "LastBuildAttempt"
-    val lastResult = "LastResult"
+    val lastBuildResult = "LastBuildResult"
     val lastError = "LastError"
     val lastBatchID = "LastBatchID"
     val lastRequestID = "LastRequestID"
@@ -57,7 +57,7 @@ object FileMetrics {
         Attributes.downloads -> score.downloads,
         Attributes.filename -> score.filename,
         Attributes.lastBuildAttempt -> score.lastBuildAttempt,
-        Attributes.lastResult -> score.lastResult,
+        Attributes.lastBuildResult -> score.lastBuildResult,
         Attributes.lastError -> score.lastError,
         Attributes.lastBatchID -> score.lastBatchID,
         Attributes.lastError -> score.lastRequestID,
@@ -67,6 +67,10 @@ object FileMetrics {
       )
 
     override def fromAttributeMap(item: collection.mutable.Map[String, AttributeValue]) = {
+      val lastBuildResultVal: String = item.get(Attributes.lastBuildResult) match {
+        case Some(av) => av
+        case _ => dynamodb.stringToAttributeValue("")
+      }
       val lastErrorVal: String = item.get(Attributes.lastError) match {
         case Some(av) => av
         case _ => dynamodb.stringToAttributeValue("")
@@ -85,7 +89,7 @@ object FileMetrics {
         downloads = item(Attributes.downloads),
         filename = item(Attributes.filename),
         lastBuildAttempt = item(Attributes.lastBuildAttempt),
-        lastResult = item(Attributes.lastResult),
+        lastBuildResult = lastBuildResultVal,
         lastError = lastErrorVal,
         lastBatchID = lastBatchIDVal,
         lastRequestID = lastRequestIDVal,

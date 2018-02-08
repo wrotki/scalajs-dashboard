@@ -6,7 +6,7 @@ case class FileMetrics(
                         downloads: Long,
                         filename: String,
                         lastBuildAttempt: String,
-                        lastResult: String,
+                        lastBuildResult: String,
                         lastError: String,
                         lastBatchID: String,
                         lastRequestID: Long,

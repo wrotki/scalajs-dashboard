@@ -123,7 +123,7 @@ object SPAMain extends js.JSApp {
             <.th("Filename"),
             <.th("Success"),
             <.th("Fail"),
-            <.th("LastResult"),
+            <.th("LastBuildResult"),
             <.th("LastBatchID"),
             <.th("LastRequestID"),
             <.th("Last Error")
@@ -161,7 +161,7 @@ object SPAMain extends js.JSApp {
       _.filename
     }
     val data = Stream.from(0) zip debianPkgs map { fm =>
-      (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastResult, fm._2.lastError, fm._2.lastBatchID, fm._2.lastRequestID)
+      (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastBuildResult, fm._2.lastError, fm._2.lastBatchID, fm._2.lastRequestID)
     }
 
     val cls = (success: Long) => if (success > 0) {
