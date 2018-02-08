@@ -22,7 +22,6 @@ object ConfigApiImpl extends ConfigApi {
 
   val mapper = AmazonDynamoDBScalaMapper(client)
 
-  val fileMetrics = mapper.scan[FileMetrics]()
 
   override def getConfig(service: String, deployment: String): String =
     """{
@@ -32,7 +31,10 @@ object ConfigApiImpl extends ConfigApi {
       |"""
       .stripMargin
 
-  override def getFileMetrics(): Seq[FileMetrics] = Await.result(fileMetrics, 300 seconds)
+  override def getFileMetrics(): Seq[FileMetrics] = {
+    val fileMetrics = mapper.scan[FileMetrics]()
+    Await.result(fileMetrics, 300 seconds)
+  }
 
 }
 
