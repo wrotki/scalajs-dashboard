@@ -8,6 +8,8 @@ case class FileMetrics(
                         lastBuildAttempt: String,
                         lastResult: String,
                         lastError: String,
+                        lastBatchID: String,
+                        lastRequestID: Long,
                         packageName: String,
                         revision: Long,
                         timestamp: String

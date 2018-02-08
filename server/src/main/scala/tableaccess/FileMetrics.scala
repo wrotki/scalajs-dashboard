@@ -1,5 +1,6 @@
 package tableaccess
 
+import com.github.dwhjames.awswrap.dynamodb
 import com.github.dwhjames.awswrap.dynamodb.{AttributeValue, _}
 
 case class FileMetrics(
@@ -10,6 +11,8 @@ case class FileMetrics(
                         lastBuildAttempt: String,
                         lastResult: String,
                         lastError: String,
+                        lastBatchID: String,
+                        lastRequestID: Long,
                         packageName: String,
                         revision: Long,
                         timestamp: String
@@ -28,6 +31,8 @@ object FileMetrics {
     val lastBuildAttempt = "LastBuildAttempt"
     val lastResult = "LastResult"
     val lastError = "LastError"
+    val lastBatchID = "LastBatchID"
+    val lastRequestID = "LastRequestID"
     val packageName = "PackageName"
     val revision = "Revision"
     val timestamp = "Timestamp"
@@ -54,6 +59,8 @@ object FileMetrics {
         Attributes.lastBuildAttempt -> score.lastBuildAttempt,
         Attributes.lastResult -> score.lastResult,
         Attributes.lastError -> score.lastError,
+        Attributes.lastBatchID -> score.lastBatchID,
+        Attributes.lastError -> score.lastRequestID,
         Attributes.packageName -> score.packageName,
         Attributes.revision -> score.revision,
         Attributes.timestamp -> score.timestamp
@@ -61,14 +68,16 @@ object FileMetrics {
 
     override def fromAttributeMap(item: collection.mutable.Map[String, AttributeValue]) = {
       val lastErrorVal: String = item.get(Attributes.lastError) match {
-        case Some(av) => {
-//          println(s"Some(lastError): $av")
-          av
-        }
-        case _ => {
-//          println(s"None(lastError)")
-          ""
-        }
+        case Some(av) => av
+        case _ => dynamodb.stringToAttributeValue("")
+      }
+      val lastBatchIDVal: String = item.get(Attributes.lastBatchID) match {
+        case Some(av) => av
+        case _ => dynamodb.stringToAttributeValue("")
+      }
+      val lastRequestIDVal = item.get(Attributes.lastRequestID) match {
+        case Some(av) => av
+        case _ => dynamodb.longToAttributeValue(0)
       }
       FileMetrics(
         buildFail = item(Attributes.buildFail),
@@ -78,6 +87,8 @@ object FileMetrics {
         lastBuildAttempt = item(Attributes.lastBuildAttempt),
         lastResult = item(Attributes.lastResult),
         lastError = lastErrorVal,
+        lastBatchID = lastBatchIDVal,
+        lastRequestID = lastRequestIDVal,
         packageName = item(Attributes.packageName),
         revision = item(Attributes.revision),
         timestamp = item(Attributes.timestamp)
