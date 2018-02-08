@@ -1,2 +1,1 @@
-# bigbang-dashboard
-BigBang problems invetigation helper tool
+BigBang problems investigation helper tool
