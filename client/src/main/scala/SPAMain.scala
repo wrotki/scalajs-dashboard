@@ -152,7 +152,7 @@ object SPAMain extends js.JSApp {
 
   def fileMetricsStats(sfm: Seq[FileMetrics]) = {
     val successCount = sfm count{ _.buildSuccess > 0 }
-    val failCount = sfm count{ _.buildFail > 0 }
+    val failCount = sfm count{ _.buildSuccess == 0 }
     (successCount, failCount)
   }
 
@@ -161,7 +161,9 @@ object SPAMain extends js.JSApp {
       _.filename
     }
     val data = Stream.from(0) zip debianPkgs map { fm =>
-      (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail, fm._2.lastBuildResult, fm._2.lastError, fm._2.lastBatchID, fm._2.lastRequestID)
+      (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail,
+        if(fm._2.buildSuccess>0) fm._2.lastBuildResult else "failred",
+        fm._2.lastError, fm._2.lastBatchID, fm._2.lastRequestID)
     }
 
     val cls = (success: Long) => if (success > 0) {
