@@ -98,7 +98,9 @@ object SPAMain extends js.JSApp {
             <.th("Success"),
             <.th(stats._1),
             <.th("Fail"),
-            <.th(stats._2)
+            <.th(stats._2),
+            <.th("LastBuildFail"),
+            <.th(stats._3)
           )
         ),
         <.colgroup(
@@ -153,7 +155,8 @@ object SPAMain extends js.JSApp {
   def fileMetricsStats(sfm: Seq[FileMetrics]) = {
     val successCount = sfm count{ _.buildSuccess > 0 }
     val failCount = sfm count{ _.buildSuccess == 0 }
-    (successCount, failCount)
+    val lastFailCount = sfm count{ _.lastBuildResult != "success" }
+    (successCount, failCount, lastFailCount)
   }
 
   def fileMetricsRows(sfm: Seq[FileMetrics]): Seq[TagOf[TableRow]] = {
