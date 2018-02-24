@@ -1,13 +1,13 @@
 package config
 
-import com.amazonaws.auth.{AWSCredentialsProvider, BasicAWSCredentials, DefaultAWSCredentialsProviderChain}
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.services.dynamodbv2._
 import com.github.dwhjames.awswrap.dynamodb.{AmazonDynamoDBScalaClient, AmazonDynamoDBScalaMapper}
 import tableaccess.FileMetrics
 
 import scala.concurrent.Await
-import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 
 object ConfigApiImpl extends ConfigApi {
