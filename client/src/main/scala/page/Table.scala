@@ -1,6 +1,7 @@
 package page
 
 import autowire._
+import boopickle.Default._ // Do not delete, IntelliJ is wrong about it not being used
 import config.ConfigApi
 import japgolly.scalajs.react.vdom.TagOf
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
@@ -12,7 +13,6 @@ import tableaccess.{ConfigServer, FileMetrics}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-
 object Table {
   def table = {
     val rows = ScalaComponent.builder[Unit]("Rows")
@@ -23,7 +23,7 @@ object Table {
 
     rows
   }
-  def apply = table()
+  def component = table()
 }
 
 class Backend($: BackendScope[Unit, State]) {
