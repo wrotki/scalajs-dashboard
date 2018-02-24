@@ -23,7 +23,7 @@ object Table {
 
     rows
   }
-  def get = table()
+  def apply = table()
 }
 
 class Backend($: BackendScope[Unit, State]) {

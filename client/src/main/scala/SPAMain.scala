@@ -14,7 +14,7 @@ object SPAMain extends js.JSApp {
   def main(): Unit = {
     log.warn("Application starting")
 
-    Page.get.renderIntoDOM(dom.document.getElementById("ace"))
+    Page().renderIntoDOM(dom.document.getElementById("ace"))
   }
 
 }

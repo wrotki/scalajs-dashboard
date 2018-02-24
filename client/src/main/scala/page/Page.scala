@@ -6,12 +6,12 @@ import org.scalajs.dom.html.Div
 
 object Page {
 
-  def get: TagOf[Div]  =
+  def apply: TagOf[Div]  =
       <.div(
         //    <.div("BEFORE"),
         //    ace,
         //    <.div("AFTER"),
         //    row,
-        Table.get
+        Table()
       )
 }
