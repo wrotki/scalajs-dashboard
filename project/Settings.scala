@@ -22,6 +22,7 @@ object Settings {
     val autowire = "0.2.5"
     val booPickle = "1.2.5"
     val scalaJSReact = "1.1.0"
+    val cats = "1.0.1"
     val scalaDom = "0.9.2"
 
     val uTest = "0.4.4"
@@ -77,6 +78,7 @@ object Settings {
     //    "me.chrons" %%% "diode" % versions.diode,
     //    "me.chrons" %%% "diode-react" % versions.diode,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
+    "org.typelevel" %%% "cats-core" % versions.cats,
     "com.lihaoyi" %%% "utest" % versions.uTest % Test
   ))
 

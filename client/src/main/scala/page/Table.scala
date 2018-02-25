@@ -48,9 +48,19 @@ class Backend($: BackendScope[Unit, State]) {
   }
 
   def render(s: State) = {
+
+    val ma = Map( "a" -> 1 )
+    val mb = Map( "b" -> 1 )
+    val mc = ma ++ mb
+
+    val root = Htmler(Some(Piece.root))
+    val one = Htmler(Some(Piece.one))
+    val two = Htmler(Some(Piece.two))
+
     val rows = fileMetricsRows(filterByDistro(s.fileMetrics))
     val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
     ElementalTable.component(ElementalTable.props(size = "0"))(
+      (one ++ two).tag.get,
       <.thead(
         <.tr(
           <.th(

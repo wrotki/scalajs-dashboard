@@ -8,6 +8,7 @@ name := "table-viewer"
 version := "1.0"
 
 scalaVersion in ThisBuild := Settings.versions.scala // "2.12.1"
+scalacOptions in ThisBuild += "-Ypartial-unification"
 
 val commonSettings = Seq(
   libraryDependencies ++= Settings.sharedDependencies.value,
