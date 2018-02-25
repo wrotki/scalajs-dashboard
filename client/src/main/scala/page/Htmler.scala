@@ -11,7 +11,7 @@ import page.Htmler.htmlerAdditionMonoid
 
 class Htmler( val tag: Option[TagOf[HTMLElement]] ){
 
-  import Htmler.Tag
+//  import Htmler.Tag
 
   val root: TagOf[Div] = <.div(
     <.div("ROOT")
@@ -51,5 +51,7 @@ object Htmler {
       Some(root)
     }
   }
+
+  implicit def htmler2HtmlElement(h: Htmler) = h.tag.get
 
 }

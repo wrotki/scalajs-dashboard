@@ -57,10 +57,14 @@ class Backend($: BackendScope[Unit, State]) {
     val one = Htmler(Some(Piece.one))
     val two = Htmler(Some(Piece.two))
 
+    val combined = root ++ one ++ two
+
+    import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
+
     val rows = fileMetricsRows(filterByDistro(s.fileMetrics))
     val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
     ElementalTable.component(ElementalTable.props(size = "0"))(
-      (one ++ two).tag.get,
+      combined,
       <.thead(
         <.tr(
           <.th(
