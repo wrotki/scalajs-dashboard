@@ -1,12 +1,12 @@
 package page
 
 import autowire._
-import boopickle.Default._ // Do not delete, IntelliJ is wrong about it not being used
+import boopickle.Default._
 import config.ConfigApi
 import japgolly.scalajs.react.vdom.TagOf
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import org.scalajs.dom.html.TableRow
+import org.scalajs.dom.html.{TableRow, TableSection}
 import spa.client.elemental.css.{Table => ElementalTable}
 import state.State
 import tableaccess.{ConfigServer, FileMetrics}
@@ -49,70 +49,82 @@ class Backend($: BackendScope[Unit, State]) {
 
   def render(s: State) = {
 
-    val ma = Map( "a" -> 1 )
-    val mb = Map( "b" -> 1 )
-    val mc = ma ++ mb
-
-    val root = Htmler(Some(Piece.root))
-    val one = Htmler(Some(Piece.one))
-    val two = Htmler(Some(Piece.two))
-
-    val combined = root ++ one ++ two
+//    val root = Htmler(Some(Piece.root))
+//    val one = Htmler(Some(Piece.one))
+//    val two = Htmler(Some(Piece.two))
+//
+//    val combined = root ++ one ++ two
 
     import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
 
-    val rows = fileMetricsRows(filterByDistro(s.fileMetrics))
-    val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
     ElementalTable.component(ElementalTable.props(size = "0"))(
-      combined,
-      <.thead(
-        <.tr(
-          <.th(
-            <.label(
-              <.input(^.`type` := "checkbox")
-            )
-          ),
-          <.th(""),
-          <.th(""),
-          <.th("Success"),
-          <.th(stats._1),
-          <.th("Fail"),
-          <.th(stats._2),
-          <.th("LastBuildFail"),
-          <.th(stats._3)
-        )
-      ),
-      <.colgroup(
-        <.col(^.width := "10"),
-        <.col(^.width := "3%"),
-        <.col(^.width := "20%"),
-        <.col(^.width := "5%"),
-        <.col(^.width := "5%"),
-        <.col(^.width := "5%"),
-        <.col(^.width := "5%"),
-        <.col(^.width := "5%"),
-        <.col(^.width := "")
-      ),
-      <.thead(
-        <.tr(
-          <.th(
-            <.label(
-              <.input(^.`type` := "checkbox")
-            )
-          ),
-          <.th("ID"),
-          <.th("Filename"),
-          <.th("Success"),
-          <.th("Fail"),
-          <.th("LastBuildResult"),
-          <.th("LastBatchID"),
-          <.th("LastRequestID"),
-          <.th("Last Error")
-        )
-      ),
-      <.tbody(
-        rows: _*
+//      combined,
+      renderStats(s),
+      renderPackagesHead(s),
+      renderPackagesHeadSizes(s),
+      renderPackages(s)
+    )
+  }
+
+  def renderStats(s: State) = {
+    val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
+    <.thead(
+      <.tr(
+        <.th(
+          <.label(
+            <.input(^.`type` := "checkbox")
+          )
+        ),
+        <.th(""),
+        <.th(""),
+        <.th("Success"),
+        <.th(stats._1),
+        <.th("Fail"),
+        <.th(stats._2),
+        <.th("LastBuildFail"),
+        <.th(stats._3)
       )
+    )
+  }
+
+  def renderPackagesHeadSizes(s: State) = {
+    <.colgroup(
+      <.col(^.width := "10"),
+      <.col(^.width := "3%"),
+      <.col(^.width := "20%"),
+      <.col(^.width := "5%"),
+      <.col(^.width := "5%"),
+      <.col(^.width := "5%"),
+      <.col(^.width := "5%"),
+      <.col(^.width := "5%"),
+      <.col(^.width := "")
+    )
+  }
+
+  def renderPackagesHead(s: State) = {
+    <.thead(
+      <.tr(
+        <.th(
+          <.label(
+            <.input(^.`type` := "checkbox")
+          )
+        ),
+        <.th("ID"),
+        <.th("Filename"),
+        <.th("Success"),
+        <.th("Fail"),
+        <.th("LastBuildResult"),
+        <.th("LastBatchID"),
+        <.th("LastRequestID"),
+        <.th("Last Error")
+      )
+    )
+  }
+
+  def renderPackages(s: State) = {
+    val rows = fileMetricsRows(filterByDistro(s.fileMetrics))
+    <.tbody(
+      rows: _*
     )
   }
 
