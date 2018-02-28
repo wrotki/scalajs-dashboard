@@ -8,6 +8,7 @@ import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.{TableRow, TableSection}
 import spa.client.elemental.css.{Table => ElementalTable}
+import spa.client.elemental.misc.Card
 import state.State
 import tableaccess.{ConfigServer, FileMetrics}
 
@@ -57,8 +58,11 @@ class Backend($: BackendScope[Unit, State]) {
 
     import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
 
+    val card = Card.component(Card.props("dummy"))(<.div("CardTest"))
+
     ElementalTable.component(ElementalTable.props(size = "0"))(
 //      combined,
+      card,
       renderStats(s),
       renderPackagesHead(s),
       renderPackagesHeadSizes(s),
