@@ -78,9 +78,12 @@ class Backend($: BackendScope[Unit, State]) {
         ),
         Col.component(Col.props(sm = "1/4"))()
       ),
+      Card.component(Card.props("dummy"))(
+          renderStats(s)
+      ),
       Row.component(Row.props(size = ""))(
         Col.component(Col.props(sm = ""))(
-          renderStats(s)
+
         )
       ),
       Row.component(Row.props(size = ""))(
@@ -103,21 +106,34 @@ class Backend($: BackendScope[Unit, State]) {
 
   def renderStats(s: State) = {
     val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
-    <.thead(
-      <.tr(
-        <.th(
-          <.label(
-            <.input(^.`type` := "checkbox")
-          )
-        ),
-        <.th(""),
-        <.th(""),
-        <.th("Success"),
-        <.th(stats._1),
-        <.th("Fail"),
-        <.th(stats._2),
-        <.th("LastBuildFail"),
-        <.th(stats._3)
+    <.div(
+      <.colgroup(
+        <.col(^.width := "10"),
+        <.col(^.width := "3%"),
+        <.col(^.width := "20%"),
+        <.col(^.width := "5%"),
+        <.col(^.width := "5%"),
+        <.col(^.width := "5%"),
+        <.col(^.width := "5%"),
+        <.col(^.width := "5%"),
+        <.col(^.width := "")
+      ),
+      <.thead(
+        <.tr(
+          <.th(
+            <.label(
+              <.input(^.`type` := "checkbox")
+            )
+          ),
+          <.th(""),
+          <.th(""),
+          <.th("Success"),
+          <.th(stats._1),
+          <.th("Fail"),
+          <.th(stats._2),
+          <.th("LastBuildFail"),
+          <.th(stats._3)
+        )
       )
     )
   }
