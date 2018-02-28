@@ -9,6 +9,7 @@ import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.{TableRow, TableSection}
 import spa.client.elemental.css.{Table => ElementalTable}
 import spa.client.elemental.misc.Card
+import spa.client.elemental.grid.{Row,Col}
 import state.State
 import tableaccess.{ConfigServer, FileMetrics}
 
@@ -58,16 +59,46 @@ class Backend($: BackendScope[Unit, State]) {
 
     import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
 
-    val card = Card.component(Card.props("dummy"))(<.div("CardTest"))
+    val statsHead = Card.component(Card.props("dummy"))(<.div("Stats"))
+    val buildHead = Card.component(Card.props("dummy"))(<.div("Build"))
 
-    ElementalTable.component(ElementalTable.props(size = "0"))(
-//      combined,
-      card,
-      renderStats(s),
-      renderPackagesHead(s),
-      renderPackagesHeadSizes(s),
-      renderPackages(s)
+//    val build = ElementalTable.component(ElementalTable.props(size = "0"))(
+////      combined,
+//      build,
+//      renderStats(s),
+//      renderPackagesHead(s),
+//      renderPackagesHeadSizes(s),
+//      renderPackages(s)
+//    )
+    val page = Card.component(Card.props("dummy"))(
+      Row.component(Row.props(size = ""))(
+        Col.component(Col.props(sm = "1/4"))(),
+        Col.component(Col.props(sm = "1/2"))(
+          statsHead
+        ),
+        Col.component(Col.props(sm = "1/4"))()
+      ),
+      Row.component(Row.props(size = ""))(
+        Col.component(Col.props(sm = ""))(
+          renderStats(s)
+        )
+      ),
+      Row.component(Row.props(size = ""))(
+        Col.component(Col.props(sm = "1/4"))(),
+        Col.component(Col.props(sm = "1/2"))(
+          buildHead
+        ),
+        Col.component(Col.props(sm = "1/4"))()
+      ),
+      Row.component(Row.props(size = ""))(
+        Col.component(Col.props(sm = ""))(
+          renderPackagesHead(s),
+          renderPackagesHeadSizes(s),
+          renderPackages(s)
+        )
+      )
     )
+    page
   }
 
   def renderStats(s: State) = {
