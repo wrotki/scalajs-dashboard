@@ -1,6 +1,6 @@
 package spa.client.elemental.buttons
 
-import japgolly.scalajs.react.{Children, JsComponent}
+import japgolly.scalajs.react.{Children, JsComponent, Callback}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -24,18 +24,24 @@ object Button {
 
   type OnMeasure = js.Function1[Measures, Unit]
   type OnRest = UndefOr[JFn0[Unit]]
+  type OnClick = UndefOr[JFn0[Unit]]
 
   @js.native
   trait Props extends js.Object {
     var size: String = js.native
-
+    var `type`: String = js.native
+    var onClick: OnClick = js.native
   }
 
   def props(
-             size: String
+             size: String,
+             `type`:String,
+             onClick: Callback = Callback.empty
            ): Props = {
     val p = (new js.Object).asInstanceOf[Props]
     p.size = size
+    p.`type` = `type`
+    p.onClick = onClick.toJsCallback
     p
   }
 

@@ -6,6 +6,7 @@ import config.ConfigApi
 import japgolly.scalajs.react.vdom.TagOf
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
+import org.scalajs.dom
 import org.scalajs.dom.html.{TableRow, TableSection}
 import spa.client.elemental.buttons.Button
 import spa.client.elemental.css.{Table => ElementalTable}
@@ -75,9 +76,14 @@ class Backend($: BackendScope[Unit, State]) {
       Row.component(Row.props(size = ""))(
         Col.component(Col.props(sm = "1/1"))(
           Card.component(Card.props("dummy"))(
-            Button.component(Button.props(size = "Large"))(<.div("Build")),
-            Button.component(Button.props(size = "Large"))(<.div("Indices")),
-            Button.component(Button.props(size = "Large"))(<.div("About"))
+            // ,onClick = Callback { $.setState(State(fileMetrics))})
+            Button.component(Button.props(
+              size = "lg",
+              `type`="primary",
+              onClick = Callback { dom.window.alert("Build clicked") }
+            ))(<.div("Build")),
+            Button.component(Button.props(size = "lg", `type`="primary"))(<.div("Indices")),
+            Button.component(Button.props(size = "lg", `type`="primary"))(<.div("About"))
           )
         )
       ),
