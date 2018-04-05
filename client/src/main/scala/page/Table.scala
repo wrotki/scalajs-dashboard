@@ -21,7 +21,7 @@ object Table {
   def table = {
 
     val rows = ScalaComponent.builder[Unit]("Rows")
-      .initialState(State(Seq()))
+      .initialState(State(page=0, fileMetrics=Seq()))
       .renderBackend[Backend]
       .componentDidMount(_.backend.start)  // This fires off request to server for data to render
       .build
@@ -35,7 +35,7 @@ object Table {
 class Backend($: BackendScope[Unit, State]) {
 
   def updateFileMetrics(fileMetrics: Seq[FileMetrics]): Callback = {
-    $.setState(State(fileMetrics))
+    $.setState(State(page=0, fileMetrics))
   }
 
   def start = Callback.future {

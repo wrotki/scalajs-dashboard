@@ -1,7 +1,7 @@
 package page
 
 import config.ConfigApi
-import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
+import japgolly.scalajs.react.{BackendScope, Callback, CallbackTo, ScalaComponent}
 import japgolly.scalajs.react.vdom.html_<^.{<, _}
 import org.scalajs.dom
 import spa.client.elemental.buttons.Button
@@ -14,7 +14,7 @@ object Page {
   def page = {
 
     val content = ScalaComponent.builder[Unit]("Page")
-      .initialState(State(Seq()))
+      .initialState(State(page=0, fileMetrics=Seq()))
       .renderBackend[PageBackend]
 //      .componentDidMount(_.backend.start)  // This fires off request to server for data to render
       .build
@@ -38,12 +38,20 @@ class PageBackend($: BackendScope[Unit, State]) {
         Button.component(Button.props(
           size = "lg",
           `type`="primary",
-          onClick = Callback { dom.window.alert("Build clicked") }
+          onClick =
+              $.setState(State(page=1, fileMetrics=Seq())) >>
+              Callback.log("Build clicked")
         ))(<.div("Build")),
-        Button.component(Button.props(size = "lg", `type`="primary"))(<.div("Indices")),
+        Button.component(Button.props(
+          size = "lg",
+          `type`="primary",
+          onClick =
+            $.setState(State(page=0, fileMetrics=Seq())) >>
+              Callback.log("Indices clicked")
+        ))(<.div("Indices")),
         Button.component(Button.props(size = "lg", `type`="primary"))(<.div("About"))
       ),
-      Table.component
+      if (s.page == 0) { Table.component } else { <.div("Nothing")}
     )
     page
   }
