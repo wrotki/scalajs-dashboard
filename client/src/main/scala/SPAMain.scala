@@ -15,6 +15,8 @@ object SPAMain extends js.JSApp {
     log.warn("Application starting")
 
     Page.component.renderIntoDOM(dom.document.getElementById("ace"))
+
+    val lft: Int => Option[Int] = Seq(1,2,3).lift
   }
 
 }

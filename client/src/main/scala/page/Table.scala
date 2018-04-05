@@ -19,6 +19,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object Table {
   def table = {
+
     val rows = ScalaComponent.builder[Unit]("Rows")
       .initialState(State(Seq()))
       .renderBackend[Backend]
@@ -27,6 +28,7 @@ object Table {
 
     rows
   }
+
   def component = table()
 }
 
