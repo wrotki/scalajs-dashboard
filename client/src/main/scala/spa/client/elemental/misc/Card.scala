@@ -18,15 +18,15 @@ object Card {
 
   @js.native
   trait Props extends js.Object {
-    var dummy: String = js.native
+    var className: String = js.native
 
   }
 
   def props(
-             sm: String
+             className: String
            ): Props = {
     val p = (new js.Object).asInstanceOf[Props]
-    p.dummy = sm
+    p.className = className
     p
   }
 

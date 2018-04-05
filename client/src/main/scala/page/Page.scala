@@ -33,20 +33,20 @@ class PageBackend($: BackendScope[Unit, State]) {
       //    ace,
       //    <.div("AFTER"),
       //    row,
-      Card.component(Card.props("dummy"))(
+      Card.component(Card.props(""))(
         // ,onClick = Callback { $.setState(State(fileMetrics))})
         Button.component(Button.props(
           size = "lg",
           `type`="primary",
           onClick =
-              $.setState(State(page=1, fileMetrics=Seq())) >>
+              $.setState(State(page=0, fileMetrics=Seq())) >>
               Callback.log("Build clicked")
         ))(<.div("Build")),
         Button.component(Button.props(
           size = "lg",
           `type`="primary",
           onClick =
-            $.setState(State(page=0, fileMetrics=Seq())) >>
+            $.setState(State(page=1, fileMetrics=Seq())) >>
               Callback.log("Indices clicked")
         ))(<.div("Indices")),
         Button.component(Button.props(size = "lg", `type`="primary"))(<.div("About"))

@@ -63,8 +63,8 @@ class Backend($: BackendScope[Unit, State]) {
 
     import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
 
-    val statsHead = Card.component(Card.props("dummy"))(<.div("Stats"))
-    val buildHead = Card.component(Card.props("dummy"))(<.div("Build"))
+    val statsHead = Card.component(Card.props(""))(<.div("Stats"))
+    val buildHead = Card.component(Card.props(""))(<.div("Build"))
 
 //    val build = ElementalTable.component(ElementalTable.props(size = "0"))(
 ////      combined,
@@ -74,21 +74,7 @@ class Backend($: BackendScope[Unit, State]) {
 //      renderPackagesHeadSizes(s),
 //      renderPackages(s)
 //    )
-    val page = Card.component(Card.props("dummy"))(
-      Row.component(Row.props(size = ""))(
-        Col.component(Col.props(sm = "1/1"))(
-          Card.component(Card.props("dummy"))(
-            // ,onClick = Callback { $.setState(State(fileMetrics))})
-            Button.component(Button.props(
-              size = "lg",
-              `type`="primary",
-              onClick = Callback { dom.window.alert("Build clicked") }
-            ))(<.div("Build")),
-            Button.component(Button.props(size = "lg", `type`="primary"))(<.div("Indices")),
-            Button.component(Button.props(size = "lg", `type`="primary"))(<.div("About"))
-          )
-        )
-      ),
+    val page = Card.component(Card.props(""))(
       Row.component(Row.props(size = ""))(
         Col.component(Col.props(sm = "1/4"))(),
         Col.component(Col.props(sm = "1/2"))(
@@ -96,12 +82,11 @@ class Backend($: BackendScope[Unit, State]) {
         ),
         Col.component(Col.props(sm = "1/4"))()
       ),
-      Card.component(Card.props("dummy"))(
-          renderStats(s)
-      ),
       Row.component(Row.props(size = ""))(
         Col.component(Col.props(sm = ""))(
-
+          Card.component(Card.props(""))(
+            renderStats(s)
+          )
         )
       ),
       Row.component(Row.props(size = ""))(
