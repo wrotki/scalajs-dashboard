@@ -48,8 +48,11 @@ class Backend($: BackendScope[Unit, State]) {
   }
 
   def filterByDistro (sfm: Seq[FileMetrics]): Seq[FileMetrics] = {
-    sfm filter {
-      _.filename endsWith ".rpm"
+    sfm filter { fm =>
+
+      (fm.filename endsWith ".rpm") &&
+        (! fm.filename.contains("i686")) &&
+        (! fm.filename.contains(".fc25."))
     }
   }
 
