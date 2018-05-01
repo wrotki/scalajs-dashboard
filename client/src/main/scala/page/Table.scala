@@ -52,7 +52,7 @@ class Backend($: BackendScope[Unit, State]) {
 
       (fm.filename endsWith ".rpm") &&
         (! fm.filename.contains("i686")) &&
-        (! fm.filename.contains(".fc25."))
+        ( fm.filename.contains(".fc25."))
     }
   }
 
