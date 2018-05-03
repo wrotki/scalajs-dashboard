@@ -21,7 +21,7 @@ case class FileMetrics(
 
 object FileMetrics {
 
-  val tableName = "BigBang.mpo-18.FileMetrics"
+  //val tableName = "BigBang.mpo-18.FileMetrics"
 
   object Attributes {
     val buildFail = "BuildFail"
@@ -40,7 +40,8 @@ object FileMetrics {
 
   implicit object fileMetricsSerializer extends DynamoDBSerializer[FileMetrics] {
 
-    override val tableName = "BigBang.mpo-18.FileMetrics"
+    //override val tableName = "BigBang.mpo-18.FileMetrics"
+    override val tableName = "BigBang.staging.FileMetrics"
     override val hashAttributeName = Attributes.packageName
     override val rangeAttributeName = Some(Attributes.filename)
 
