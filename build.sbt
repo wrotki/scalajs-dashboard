@@ -79,9 +79,8 @@ lazy val server = (project in file("server"))
     // LessKeys.compress in Assets := true
   )
 
-resolvers += Resolver.bintrayRepo("dwhjames", "maven")
+resolvers in server += Resolver.bintrayRepo("dwhjames", "maven")
 
-libraryDependencies += "com.github.dwhjames" %% "aws-wrap" % "0.8.0"
 
 // loads the Play server project at sbt startup
 onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value
