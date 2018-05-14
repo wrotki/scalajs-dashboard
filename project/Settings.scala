@@ -17,9 +17,9 @@ object Settings {
   )
 
   object versions {
-    // val scala = "2.12.1"
-    val scala = "2.11.11"
-    val autowire = "0.2.5"
+    val scala = "2.12.4"
+    //val scala = "2.11.11"
+    val autowire = "0.2.6"
     val booPickle = "1.2.5"
     val scalaJSReact = "1.1.0"
     val cats = "1.0.1"
@@ -28,7 +28,7 @@ object Settings {
     val uTest = "0.4.4"
     val bootstrap = "3.3.7"
     val fontAwesome = "4.7.0"
-    val scalajsScripts = "1.0.0"
+    val scalajsScripts = "1.1.2"
     val react = "15.6.1"
     val reactAddonsTransitionGroup = "15.6.2"
     val webpack = "3.6.0"
@@ -79,6 +79,9 @@ object Settings {
     //    "me.chrons" %%% "diode-react" % versions.diode,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
     "org.typelevel" %%% "cats-core" % versions.cats,
+    "io.suzaku" %%% "diode" % "1.1.2",
+    "io.suzaku" %%% "diode-devtools" % "1.1.2",
+    "io.suzaku" %%% "diode-react"% "1.1.2",
     "com.lihaoyi" %%% "utest" % versions.uTest % Test
   ))
 

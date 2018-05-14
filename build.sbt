@@ -72,9 +72,9 @@ lazy val server = (project in file("server"))
     scalaJSProjects := Seq(client),
     pipelineStages in Assets := Seq(scalaJSPipeline),
     pipelineStages := Seq(digest, gzip),
-    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "bootstrap").*** }.value,
-    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "font-awesome").*** }.value,
-    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "elementalcss-bundle.js").*** }.value
+    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "bootstrap").allPaths }.value,
+    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "font-awesome").allPaths }.value,
+    npmAssets ++= NpmAssets.ofProject(client) { modules => (modules / "elementalcss-bundle.js").allPaths }.value
     // compress CSS
     // LessKeys.compress in Assets := true
   )
@@ -83,4 +83,4 @@ resolvers in server += Resolver.bintrayRepo("dwhjames", "maven")
 
 
 // loads the Play server project at sbt startup
-onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value
+// TODO uncomment: // onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value

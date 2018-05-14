@@ -25,7 +25,9 @@ docker build -t internal.hub.polyverse.io/bigbang-dashboard .
 P.S.
 ----
 
+A good ScalaJS-React example:
 
+https://github.com/malaman/scala-weather-app
 
 Not related, but really wanted to save the link somewhere:
 
