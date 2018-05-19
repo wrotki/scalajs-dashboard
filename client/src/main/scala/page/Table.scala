@@ -51,7 +51,7 @@ class Backend($: BackendScope[Unit, State]) {
     sfm filter { fm =>
 
       (fm.filename endsWith ".rpm") &&
-        (! fm.filename.contains("i686")) &&
+        //(! fm.filename.contains("i686")) &&
         fm.filename.contains(".el6.")
         //fm.filename.contains(".fc25.")
     }
