@@ -1,0 +1,5 @@
+package buildresults
+
+class Dummy {
+
+}

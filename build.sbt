@@ -1,3 +1,4 @@
+import sbt.CrossVersion
 //import scalajsbundler.sbtplugin.WebScalaJSBundlerPlugin
 
 // https://github.com/scala-js/scala-js/issues/2797
@@ -9,6 +10,9 @@ version := "1.0"
 
 scalaVersion in ThisBuild := Settings.versions.scala // "2.12.1"
 scalacOptions in ThisBuild += "-Ypartial-unification"
+
+//addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+
 
 val commonSettings = Seq(
   libraryDependencies ++= Settings.sharedDependencies.value,
@@ -80,6 +84,7 @@ lazy val server = (project in file("server"))
   )
 
 resolvers in server += Resolver.bintrayRepo("dwhjames", "maven")
+resolvers in server += Resolver.bintrayRepo("ticofab", "maven")
 
 
 // loads the Play server project at sbt startup
