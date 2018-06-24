@@ -1,5 +1,6 @@
 import sbt._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import sbt.Keys.libraryDependencies
 
 /**
   * Created by mariusz on 6/15/17.
@@ -57,7 +58,8 @@ object Settings {
   val jvmDependencies = Def.setting(Seq(
     "com.vmunier" %% "scalajs-scripts" % versions.scalajsScripts,
     "com.lihaoyi" %% "utest" % versions.uTest % Test,
-    "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.231",
+    "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.347",
+    "com.google.inject" % "guice" % "3.0",
 
     /**
       * https://bitbucket.org/atlassian/aws-scala
@@ -67,14 +69,19 @@ object Settings {
     /**
       * https://dwhjames.github.io/aws-wrap/
       */
-    "com.github.dwhjames" %% "aws-wrap" % "0.8.0"
+//    "com.github.dwhjames" %% "aws-wrap" % "0.12.1",
+    "io.wrotki" %% "aws-wrap" % "0.8.0",
+    "io.ticofab" %% "aws-request-signer" % "0.5.2"
   ))
 
   /** Dependencies only used by the JS project (note the use of %%% instead of %%) */
   val scalajsDependencies = Def.setting(Seq(
     "com.github.japgolly.scalajs-react" %%% "core" % versions.scalaJSReact,
     "com.github.japgolly.scalajs-react" %%% "extra" % versions.scalaJSReact,
-    //    "com.github.japgolly.scalacss" %%% "ext-react" % versions.scalaCSS,
+    "io.suzaku" %%% "diode" % "1.1.2",
+    "io.suzaku" %%% "diode-devtools" % "1.1.2",
+    "io.suzaku" %%% "diode-react"% "1.1.2",
+  //    "com.github.japgolly.scalacss" %%% "ext-react" % versions.scalaCSS,
     //    "me.chrons" %%% "diode" % versions.diode,
     //    "me.chrons" %%% "diode-react" % versions.diode,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
