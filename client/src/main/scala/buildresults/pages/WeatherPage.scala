@@ -1,5 +1,10 @@
 package buildresults.pages
 
+import scala.scalajs.js
+import js.JSConverters._
+import js.annotation._
+import org.scalajs.dom
+
 import diode.react.ModelProxy
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
@@ -8,8 +13,12 @@ import org.scalajs.dom
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.scalajs.js
-import scala.scalajs.js.JSConverters._
+import buildresults.models.PageContent
+import buildresults.router.AppRouter
+import buildresults.diode.AppState
+import buildresults.diode.AppCircuit
+
+
 
 object WeatherPage {
   @js.native
@@ -25,10 +34,7 @@ object WeatherPage {
 
   case class State(
                     var isLoading: Boolean,
-                    var inputValue: String,
-                    var weatherData: List[WeatherResponse],
-                    var selectOptions: List[Select.Options],
-                    var selectedWeather: Option[WeatherResponse]
+                    var pageContent: Option[PageContent]
                   )
 
   class Backend($: BackendScope[Props, State]) {
@@ -143,10 +149,7 @@ object WeatherPage {
     val Component = ScalaComponent.builder[Props]("WeatherPage")
       .initialState(State(
         isLoading = false,
-        inputValue = "",
-        weatherData = List.empty[WeatherResponse],
-        selectOptions = List.empty[Select.Options],
-        selectedWeather = None : Option[WeatherResponse]
+        pageContent = None : Option[PageContent]
       ))
       .renderBackend[Backend]
       .build
