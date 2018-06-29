@@ -50,7 +50,9 @@ lazy val client = (project in file("client"))
     scalaJSLinkerConfig ~= {
       _.withSourceMap(false)
     },
-    //scalaJSModuleKind := ModuleKind.CommonJSModule,
+    // https://github.com/scalacenter/scalajs-bundler/issues/114
+    scalaJSModuleKind := ModuleKind.CommonJSModule,
+    scalaJSUseMainModuleInitializer := true,
     name := "client",
     version := Settings.version,
     scalaVersion := Settings.versions.scala,
@@ -87,6 +89,7 @@ lazy val server = (project in file("server"))
 // resolvers in server += Resolver.bintrayRepo("dwhjames", "maven")
 resolvers in server += Resolver.bintrayRepo("ticofab", "maven")
 
+libraryDependencies in server += guice
 
 // loads the Play server project at sbt startup
 // TODO uncomment: // onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value

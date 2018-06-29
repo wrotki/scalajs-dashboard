@@ -1,6 +1,6 @@
 package buildresults.components
 
-import diode.react.ModelProxy
+
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import japgolly.scalajs.react.vdom.html_<^._
@@ -8,6 +8,14 @@ import org.scalajs.dom
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+
+import diode.react.ModelProxy
+import buildresults.diode.AppState
+import buildresults.config.Config
+import buildresults.diode.AppCircuit.connect
+import buildresults.diode._
+import buildresults.models.{PageContent}
+import buildresults.router.AppRouter.Page
 
 object Layout {
   val connection = connect(_.state)
@@ -21,43 +29,49 @@ object Layout {
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
 
-    def getUserResponse = CallbackTo[Future[UserResponse]] {
+//    def getUserResponse = CallbackTo[Future[UserResponse]] {
+//      AppCircuit.dispatch(SetLoadingState())
+//      dom.ext.Ajax
+//        .get(url=s"$host/user-info", withCredentials=true)
+//        .map {xhr =>
+//          val option = decode[UserResponse](xhr.responseText)
+//          option match {
+//            case Left(failure) => UserResponse(GithubUser(), List.empty[OpenWeatherBaseCity])
+//            case Right(data) => data
+//          }
+//        }
+//    }
+//
+//    def dispatchUserInfo(userInfoFuture: Future[UserResponse]) = CallbackTo[Future[UserResponse]] {
+//      userInfoFuture.map {userInfo =>
+//        val userInfoOption = if (userInfo.user.id != -1) Some(userInfo) else None
+//        AppCircuit.dispatch(ClearLoadingState())
+//        AppCircuit.dispatch(GetUserInfo(userInfoOption))
+//        userInfo
+//      }
+//    }
+//
+//    def loadAndDispatchCitiesWeather(userInfoFuture: Future[UserResponse]) = Callback {
+//      userInfoFuture.map { userInfo =>
+//        userInfo.cities.map {city =>
+//          dom.ext.Ajax.get(url=s"$host/weather-city?id=${city.id}").map {xhr =>
+//            val option = decode[WeatherResponse](xhr.responseText)
+//            option match {
+//              case Left(_) => None
+//              case Right(data) => AppCircuit.dispatch(GetWeatherForFavCity(data))
+//            }
+//          }
+//        }
+//      }
+//    }
+
+    def getFakePage = Callback {
       AppCircuit.dispatch(SetLoadingState())
-      dom.ext.Ajax
-        .get(url=s"$host/user-info", withCredentials=true)
-        .map {xhr =>
-          val option = decode[UserResponse](xhr.responseText)
-          option match {
-            case Left(failure) => UserResponse(GithubUser(), List.empty[OpenWeatherBaseCity])
-            case Right(data) => data
-          }
-        }
+      println( "In getFakePage")
     }
 
-    def dispatchUserInfo(userInfoFuture: Future[UserResponse]) = CallbackTo[Future[UserResponse]] {
-      userInfoFuture.map {userInfo =>
-        val userInfoOption = if (userInfo.user.id != -1) Some(userInfo) else None
-        AppCircuit.dispatch(ClearLoadingState())
-        AppCircuit.dispatch(GetUserInfo(userInfoOption))
-        userInfo
-      }
-    }
-
-    def loadAndDispatchCitiesWeather(userInfoFuture: Future[UserResponse]) = Callback {
-      userInfoFuture.map { userInfo =>
-        userInfo.cities.map {city =>
-          dom.ext.Ajax.get(url=s"$host/weather-city?id=${city.id}").map {xhr =>
-            val option = decode[WeatherResponse](xhr.responseText)
-            option match {
-              case Left(_) => None
-              case Right(data) => AppCircuit.dispatch(GetWeatherForFavCity(data))
-            }
-          }
-        }
-      }
-    }
-
-    def mounted: Callback = getUserResponse >>= dispatchUserInfo >>= loadAndDispatchCitiesWeather
+    //    def mounted: Callback = getUserResponse >>= dispatchUserInfo >>= loadAndDispatchCitiesWeather
+    def mounted: Callback = getFakePage
 
     def render(props: Props): VdomElement = {
       <.div(

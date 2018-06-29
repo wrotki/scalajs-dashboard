@@ -38,96 +38,97 @@ object WeatherPage {
                   )
 
   class Backend($: BackendScope[Props, State]) {
-    def getSelectOptions(data: List[WeatherResponse], intputValue: String) = {
-      data.zipWithIndex.map { case (item, index) => Select.Options(
-        value = s"$intputValue::$index",
-        label = s"${item.name}, ${item.sys.country} ${item.weather.head.main} ${(math rint item.main.temp * 10) / 10} °C"
-      )}
-    }
 
-    def loadWeatherInfo(city: String): Callback = {
-      val host = Config.AppConfig.apiHost
-      val setLoading = $.modState(s => s.copy(isLoading = true))
-
-      def getData(): Future[List[WeatherResponse]] = {
-        dom.ext.Ajax.get(url=s"$host/weather?city=$city").map(xhr => {
-          val option = decode[List[WeatherResponse]](xhr.responseText)
-          option match {
-            case Left(failure) => List.empty[WeatherResponse]
-            case Right(data) => data
-          }
-        })
-      }
-
-      def updateState: Future[Callback] = {
-        getData().map {weather =>
-          AppCircuit.dispatch(GetWeatherSuggestions(weather))
-          $.modState(s => s.copy(
-            isLoading =  false,
-            weatherData = weather,
-            selectOptions = getSelectOptions(weather, s.inputValue))
-          )
-        }
-      }
-
-      setLoading >> Callback.future(updateState)
-    }
-
-    val throttleInputValueChange: js.Dynamic = {
-      throttle(() => {
-        $.state.map { state =>
-          val city = state.inputValue
-          if (city.nonEmpty) {
-            loadWeatherInfo(city).runNow()
-          }
-        }.runNow()
-      }, 400)
-    }
-
-    def onInputValueChange(value: String): Unit = {
-      val selectedValue = try {
-        Some(value)
-      } catch {
-        case e: Exception => None : Option[String]
-      }
-      $.modState(s => s.copy(inputValue = selectedValue.getOrElse(""))).runNow()
-      throttleInputValueChange()
-    }
-
-    def onSelectChange(option: Select.Options) = {
-      val selectedValue = try {
-        Some(option.value)
-      } catch {
-        case e: Exception => None : Option[String]
-      }
-      $.modState(s => {
-        s.inputValue = selectedValue.getOrElse("")
-        if (s.inputValue == "") {
-          s.selectOptions = List.empty[Select.Options]
-          s.selectedWeather = None: Option[WeatherResponse]
-
-        } else {
-          val arr = option.value.split("::")
-          val index = if (arr.length == 2) arr(1).toInt else -1
-          s.selectedWeather = if (index == -1) None else Some(s.weatherData(index))
-        }
-        AppCircuit.dispatch(SelectWeather(s.selectedWeather))
-        s
-      }).runNow()
-    }
+//    def getSelectOptions(data: List[WeatherResponse], intputValue: String) = {
+//      data.zipWithIndex.map { case (item, index) => Select.Options(
+//        value = s"$intputValue::$index",
+//        label = s"${item.name}, ${item.sys.country} ${item.weather.head.main} ${(math rint item.main.temp * 10) / 10} °C"
+//      )}
+//    }
+//
+//    def loadWeatherInfo(city: String): Callback = {
+//      val host = Config.AppConfig.apiHost
+//      val setLoading = $.modState(s => s.copy(isLoading = true))
+//
+//      def getData(): Future[List[WeatherResponse]] = {
+//        dom.ext.Ajax.get(url=s"$host/weather?city=$city").map(xhr => {
+//          val option = decode[List[WeatherResponse]](xhr.responseText)
+//          option match {
+//            case Left(failure) => List.empty[WeatherResponse]
+//            case Right(data) => data
+//          }
+//        })
+//      }
+//
+//      def updateState: Future[Callback] = {
+//        getData().map {weather =>
+//          AppCircuit.dispatch(GetWeatherSuggestions(weather))
+//          $.modState(s => s.copy(
+//            isLoading =  false,
+//            weatherData = weather,
+//            selectOptions = getSelectOptions(weather, s.inputValue))
+//          )
+//        }
+//      }
+//
+//      setLoading >> Callback.future(updateState)
+//    }
+//
+//    val throttleInputValueChange: js.Dynamic = {
+//      throttle(() => {
+//        $.state.map { state =>
+//          val city = state.inputValue
+//          if (city.nonEmpty) {
+//            loadWeatherInfo(city).runNow()
+//          }
+//        }.runNow()
+//      }, 400)
+//    }
+//
+//    def onInputValueChange(value: String): Unit = {
+//      val selectedValue = try {
+//        Some(value)
+//      } catch {
+//        case e: Exception => None : Option[String]
+//      }
+//      $.modState(s => s.copy(inputValue = selectedValue.getOrElse(""))).runNow()
+//      throttleInputValueChange()
+//    }
+//
+//    def onSelectChange(option: Select.Options) = {
+//      val selectedValue = try {
+//        Some(option.value)
+//      } catch {
+//        case e: Exception => None : Option[String]
+//      }
+//      $.modState(s => {
+//        s.inputValue = selectedValue.getOrElse("")
+//        if (s.inputValue == "") {
+//          s.selectOptions = List.empty[Select.Options]
+//          s.selectedWeather = None: Option[WeatherResponse]
+//
+//        } else {
+//          val arr = option.value.split("::")
+//          val index = if (arr.length == 2) arr(1).toInt else -1
+//          s.selectedWeather = if (index == -1) None else Some(s.weatherData(index))
+//        }
+//        AppCircuit.dispatch(SelectWeather(s.selectedWeather))
+//        s
+//      }).runNow()
+//    }
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      val weatherData = proxy.weatherSuggestions
-      val userInfo = proxy.userInfo
-      val select = Select(
-        "form-field-name",
-        s.selectOptions.toJSArray,
-        s.inputValue,
-        onInputValueChange,
-        onSelectChange,
-        pIsLoading = s.isLoading
-      )
+//      val weatherData = proxy.weatherSuggestions
+//      val userInfo = proxy.userInfo
+//      val select = Select(
+//        "form-field-name",
+//        s.selectOptions.toJSArray,
+//        s.inputValue,
+//        onInputValueChange,
+//        onSelectChange,
+//        pIsLoading = s.isLoading
+//      )
       <.div(
         ^.margin := "0 auto",
         ^.className := "weather-page",
@@ -135,12 +136,14 @@ object WeatherPage {
           ^.className := "weather-page__label",
           "Enter city to get weather: "
         ),
+//        <.div(
+//          ^.marginBottom := 10.px,
+//          select
+//        ),
         <.div(
-          ^.marginBottom := 10.px,
-          select
-        ),
-        <.div(
-          WeatherBox(WeatherBox.Props(s.selectedWeather, p.ctl, userInfo, isSaveBtn = true))
+          ^.className := "weather-page__label",
+//          WeatherBox(WeatherBox.Props(s.selectedWeather, p.ctl, userInfo, isSaveBtn = true))
+          proxy.pageContent.get.text
         )
       )
     }

@@ -1,6 +1,7 @@
 package buildresults.config
 
 import scala.scalajs.js
+import js.annotation.JSGlobal
 
 object Config {
   @js.native

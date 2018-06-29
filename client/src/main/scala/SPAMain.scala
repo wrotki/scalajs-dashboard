@@ -1,20 +1,26 @@
 
 import org.scalajs.dom
-import page.Page
-import spa.client.logger._
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js.annotation.{JSExportTopLevel,JSExport}
 
+import page.Page
+import spa.client.logger._
+import buildresults.router.AppRouter
 
-@JSExport("SPAMain")
-object SPAMain extends js.JSApp {
+@JSExportTopLevel("SPAMain")
+object SPAMain {
 
   @JSExport
-  def main(): Unit = {
+  def main(args: Array[String]): Unit = {
     log.warn("Application starting")
+    println("Hello world!")
 
-    Page.component.renderIntoDOM(dom.document.getElementById("ace"))
+    val aceTarget = dom.document.getElementById("ace")
+    Page.component.renderIntoDOM(aceTarget)
+
+    val routerTarget = dom.document.getElementById("root")
+    AppRouter.router().renderIntoDOM(routerTarget)
 
     val lft: Int => Option[Int] = Seq(1,2,3).lift
   }
