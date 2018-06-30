@@ -16,17 +16,9 @@ object Header {
 
   val Component = ScalaFnComponent[Props](props => {
     val proxy = props.proxy()
-    val pageContent = proxy.pageContent
     <.div(
       ^.display := "flex",
-      ^.justifyContent := "space-between",
-      proxy.pageContent.map(pageContent =>
-        <.div(
-          ^.display := "flex",
-          ^.justifyContent := "flex-end",
-          pageContent.text
-        )
-      ).whenDefined
+      ^.justifyContent := "space-between"
     )
   })
 

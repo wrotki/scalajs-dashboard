@@ -1,11 +1,9 @@
 package buildresults.diode
 
 import diode.Action
-import buildresults.models.PageContent
 import tableaccess.FileMetrics
 
 case class AppState (
-                      pageContent: Option[PageContent],
                       page: Int = 0,
                       fileMetrics: Seq[FileMetrics] = Seq(),
                       isLoading: Boolean
@@ -14,9 +12,6 @@ case class AppState (
 case class AppModel(
                      state: AppState
                    )
-
-
-case class GetPageContent(content: Option[PageContent]) extends Action
 
 case class SetFileMetrics(fileMetrics: Seq[FileMetrics]) extends Action
 

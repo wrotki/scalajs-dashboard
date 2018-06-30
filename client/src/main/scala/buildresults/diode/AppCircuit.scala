@@ -2,12 +2,10 @@ package buildresults.diode
 
 import diode._
 import diode.react.ReactConnector
-import buildresults.models.{PageContent}
 
 object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
   def initialModel = AppModel(
     AppState(
-      pageContent = None: Option[PageContent],
       page = 0,
       fileMetrics = Seq(),
       isLoading = false
@@ -22,7 +20,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
 
 class PageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW) {
   override def handle = {
-    case GetPageContent(pageContent) => updated(value.copy(pageContent = pageContent))
+    case SetPage(page) => updated(value.copy(page = page))
   }
 }
 
@@ -30,7 +28,6 @@ class AppHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW
   override def handle = {
     case SetLoadingState() => updated(value.copy(isLoading = true))
     case ClearLoadingState() => updated(value.copy(isLoading = false))
-    case GetPageContent(pageContent) => updated(value.copy(pageContent = pageContent))
     case SetFileMetrics(fileMetrics) => updated(value.copy(fileMetrics = fileMetrics))
     case SetPage(page) => updated(value.copy(page = page))
   }

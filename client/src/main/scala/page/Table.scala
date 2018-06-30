@@ -3,7 +3,6 @@ package page
 import autowire._
 import boopickle.Default._
 import buildresults.diode._
-import buildresults.models.PageContent
 import buildresults.router.AppRouter
 import config.ConfigApi
 import diode.react.ModelProxy
@@ -56,7 +55,7 @@ object Table {
     def filterByDistro(sfm: Seq[FileMetrics]): Seq[FileMetrics] = {
       sfm filter { fm =>
         (fm.filename endsWith ".rpm") &&
-          //        fm.lastBatchID.contains("rhel") &&
+          fm.lastBatchID.contains("centos") &&
           //        fm.filename.contains(".el6.")
           (!fm.filename.contains("i686")) &&
           fm.filename.contains(".el7.")

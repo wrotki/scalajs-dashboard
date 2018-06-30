@@ -18,7 +18,6 @@ import buildresults.diode._
 import buildresults.diode.AppState
 import buildresults.diode.AppCircuit.connect
 import buildresults.config.Config
-import buildresults.models.PageContent
 import buildresults.router.AppRouter.Page
 import page.DashboardPage
 import config.ConfigApi

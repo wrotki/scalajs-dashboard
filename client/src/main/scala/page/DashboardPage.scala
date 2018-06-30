@@ -4,7 +4,6 @@ import japgolly.scalajs.react.{BackendScope, Callback, CallbackTo, ScalaComponen
 import japgolly.scalajs.react.vdom.html_<^.{<, _}
 import config.ConfigApi
 import buildresults.diode.{AppCircuit, AppState, SetFileMetrics, SetPage}
-import buildresults.models.PageContent
 import buildresults.router.AppRouter
 import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
