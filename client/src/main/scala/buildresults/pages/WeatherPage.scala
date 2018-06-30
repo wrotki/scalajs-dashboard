@@ -4,7 +4,6 @@ import scala.scalajs.js
 import js.JSConverters._
 import js.annotation._
 import org.scalajs.dom
-
 import diode.react.ModelProxy
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
@@ -17,6 +16,7 @@ import buildresults.models.PageContent
 import buildresults.router.AppRouter
 import buildresults.diode.AppState
 import buildresults.diode.AppCircuit
+import spa.client.logger.log
 
 
 
@@ -118,6 +118,7 @@ object WeatherPage {
 //    }
 
     def render(p: Props, s: State) = {
+      log.info("WeatherPage::render")
       val proxy = p.proxy()
 //      val weatherData = proxy.weatherSuggestions
 //      val userInfo = proxy.userInfo
@@ -143,7 +144,7 @@ object WeatherPage {
         <.div(
           ^.className := "weather-page__label",
 //          WeatherBox(WeatherBox.Props(s.selectedWeather, p.ctl, userInfo, isSaveBtn = true))
-          proxy.pageContent.get.text
+          proxy.pageContent.getOrElse(PageContent("Empty")).text
         )
       )
     }

@@ -8,14 +8,14 @@ import org.scalajs.dom
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 import diode.react.ModelProxy
 import buildresults.diode.AppState
 import buildresults.config.Config
 import buildresults.diode.AppCircuit.connect
 import buildresults.diode._
-import buildresults.models.{PageContent}
+import buildresults.models.PageContent
 import buildresults.router.AppRouter.Page
+import spa.client.logger.log
 
 object Layout {
   val connection = connect(_.state)
@@ -27,7 +27,7 @@ object Layout {
                   )
 
   class Backend(bs: BackendScope[Props, Unit]) {
-    val host: String = Config.AppConfig.apiHost
+//    val host: String = Config.AppConfig.apiHost
 
 //    def getUserResponse = CallbackTo[Future[UserResponse]] {
 //      AppCircuit.dispatch(SetLoadingState())
@@ -67,6 +67,8 @@ object Layout {
 
     def getFakePage = Callback {
       AppCircuit.dispatch(SetLoadingState())
+      log.info("Layout::getFakePage")
+
       println( "In getFakePage")
     }
 

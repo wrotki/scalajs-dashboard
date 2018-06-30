@@ -13,16 +13,16 @@ object SPAMain {
 
   @JSExport
   def main(args: Array[String]): Unit = {
-    log.warn("Application starting")
+    log.info("Application starting")
     println("Hello world!")
 
-    val aceTarget = dom.document.getElementById("ace")
-    Page.component.renderIntoDOM(aceTarget)
+//    val aceTarget = dom.document.getElementById("ace")
+//    Page.component.renderIntoDOM(aceTarget)
 
     val routerTarget = dom.document.getElementById("root")
     AppRouter.router().renderIntoDOM(routerTarget)
 
-    val lft: Int => Option[Int] = Seq(1,2,3).lift
+    // val lft: Int => Option[Int] = Seq(1,2,3).lift
   }
 
 }

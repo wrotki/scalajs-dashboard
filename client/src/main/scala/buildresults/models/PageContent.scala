@@ -1,5 +1,5 @@
 package buildresults.models
 
 case class PageContent (
-                       text: String
+                       text: String = "PageContent"
                        )
