@@ -1,22 +1,30 @@
 package buildresults.components
 
+import scala.concurrent.Future
 
-import japgolly.scalajs.react._
+import japgolly.scalajs.react.{Callback, _}
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import japgolly.scalajs.react.vdom.html_<^._
-import org.scalajs.dom
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import autowire._
+
+import boopickle.Default._
+
 import diode.react.ModelProxy
-import buildresults.diode.AppState
-import buildresults.config.Config
-import buildresults.diode.AppCircuit.connect
+
+import spa.client.logger.log
+
 import buildresults.diode._
+import buildresults.diode.AppState
+import buildresults.diode.AppCircuit.connect
+import buildresults.config.Config
 import buildresults.models.PageContent
 import buildresults.router.AppRouter.Page
 import page.DashboardPage
-import spa.client.logger.log
+import config.ConfigApi
+import tableaccess.{ConfigServer, FileMetrics}
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Layout {
   val connection = connect(_.state)
@@ -28,54 +36,38 @@ object Layout {
                   )
 
   class Backend(bs: BackendScope[Props, Unit]) {
-    //    val host: String = Config.AppConfig.apiHost
 
-    //    def getUserResponse = CallbackTo[Future[UserResponse]] {
+    //    def getPage = Callback {
     //      AppCircuit.dispatch(SetLoadingState())
-    //      dom.ext.Ajax
-    //        .get(url=s"$host/user-info", withCredentials=true)
-    //        .map {xhr =>
-    //          val option = decode[UserResponse](xhr.responseText)
-    //          option match {
-    //            case Left(failure) => UserResponse(GithubUser(), List.empty[OpenWeatherBaseCity])
-    //            case Right(data) => data
-    //          }
-    //        }
-    //    }
+    //      AppCircuit.dispatch(GetPageContent(Some(PageContent("Some page content"))))
+    //      log.info("Layout::getPage")
     //
-    //    def dispatchUserInfo(userInfoFuture: Future[UserResponse]) = CallbackTo[Future[UserResponse]] {
-    //      userInfoFuture.map {userInfo =>
-    //        val userInfoOption = if (userInfo.user.id != -1) Some(userInfo) else None
+    //      println("In getPage")
+    //    }
+
+    //    def getFileMetrics = CallbackTo[Future[Seq[FileMetrics]]] {
+    //      AppCircuit.dispatch(SetLoadingState())
+    //      ConfigServer[ConfigApi].getFileMetrics().call() map { fm =>
+    //        log.info("FileMetrics received")
     //        AppCircuit.dispatch(ClearLoadingState())
-    //        AppCircuit.dispatch(GetUserInfo(userInfoOption))
-    //        userInfo
+    //        AppCircuit.dispatch(SetFileMetrics(fm))
+    //        fm
     //      }
-    //    }
-    //
-    //    def loadAndDispatchCitiesWeather(userInfoFuture: Future[UserResponse]) = Callback {
-    //      userInfoFuture.map { userInfo =>
-    //        userInfo.cities.map {city =>
-    //          dom.ext.Ajax.get(url=s"$host/weather-city?id=${city.id}").map {xhr =>
-    //            val option = decode[WeatherResponse](xhr.responseText)
-    //            option match {
-    //              case Left(_) => None
-    //              case Right(data) => AppCircuit.dispatch(GetWeatherForFavCity(data))
-    //            }
-    //          }
-    //        }
-    //      }
-    //    }
-
-    def getPage = Callback {
+    def fetchFileMetrics = CallbackTo[Future[Seq[FileMetrics]]] {
+      log.info("FileMetrics requested")
       AppCircuit.dispatch(SetLoadingState())
-      AppCircuit.dispatch(GetPageContent(Some(PageContent("Some page content"))))
-      log.info("Layout::getPage")
-
-      println("In getPage")
+      ConfigServer[ConfigApi].getFileMetrics().call()
     }
 
-    //    def mounted: Callback = getUserResponse >>= dispatchUserInfo >>= loadAndDispatchCitiesWeather
-    def mounted: Callback = getPage
+    def dispatchFileMetrics(fileMetrics: Future[Seq[FileMetrics]]) = Callback {
+      fileMetrics map { fm =>
+        log.info("FileMetrics received")
+        AppCircuit.dispatch(SetFileMetrics(fm))
+        AppCircuit.dispatch(ClearLoadingState())
+      }
+    }
+
+    def mounted: Callback = fetchFileMetrics >>= dispatchFileMetrics
 
     def render(props: Props): VdomElement = {
       <.div(

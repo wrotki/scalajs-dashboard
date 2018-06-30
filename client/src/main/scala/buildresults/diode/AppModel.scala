@@ -6,7 +6,8 @@ import tableaccess.FileMetrics
 
 case class AppState (
                       pageContent: Option[PageContent],
-                      fileMetrics: Seq[FileMetrics],
+                      page: Int = 0,
+                      fileMetrics: Seq[FileMetrics] = Seq(),
                       isLoading: Boolean
                     )
 
@@ -22,5 +23,7 @@ case class SetFileMetrics(fileMetrics: Seq[FileMetrics]) extends Action
 case class SetLoadingState() extends Action
 
 case class ClearLoadingState() extends Action
+
+case class SetPage(no: Int) extends Action
 
 

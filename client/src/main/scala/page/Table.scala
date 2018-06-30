@@ -18,57 +18,54 @@ import spa.client.elemental.css.{Table => ElementalTable}
 import spa.client.elemental.misc.Card
 import spa.client.elemental.grid.{Col, Row}
 import spa.client.logger.log
-import state.State
 import tableaccess.{ConfigServer, FileMetrics}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Table {
 
-  case class Props (
-                     proxy: ModelProxy[AppState],
-                     ctl: RouterCtl[AppRouter.Page]
-                   )
+  case class Props(
+                    proxy: ModelProxy[AppState],
+                    ctl: RouterCtl[AppRouter.Page]
+                  )
 
-  case class TableState(
-                         var isLoading: Boolean,
-                         var fileMetrics: Seq[FileMetrics]
-                       )
+//  case class TableState(
+//                         var isLoading: Boolean,
+//                         var fileMetrics: Seq[FileMetrics]
+//                       )
 
-  class Backend($: BackendScope[Table.Props, State]) {
+  class Backend($: BackendScope[Table.Props, Unit]) {
 
-    def updateFileMetrics(fileMetrics: Seq[FileMetrics]): Callback = {
-      $.setState(State(page=0, fileMetrics))
-    }
+//    def updateFileMetrics(fileMetrics: Seq[FileMetrics]): Callback = {
+//      $.setState(State(page = 0, fileMetrics))
+//    }
 
-    def start = Callback.future {
-      val ret = ConfigServer[ConfigApi].getFileMetrics().call() map {
-        fm => {
-          log.info("FileMetrics received")
+    //    def start = Callback.future {
+    //      val ret = ConfigServer[ConfigApi].getFileMetrics().call() map {
+    //        fm => {
+    //          log.info("FileMetrics received")
+    //
+    //          AppCircuit.dispatch(ClearLoadingState())
+    //          AppCircuit.dispatch(SetFileMetrics(fm))
+    //          updateFileMetrics(fm)
+    //        }
+    //      }
+    //      ret
+    //    }
 
-          AppCircuit.dispatch(ClearLoadingState())
-          AppCircuit.dispatch(SetFileMetrics(fm))
-          updateFileMetrics(fm)
-        }
-      }
-      ret
-    }
-
-    def filterByDistro (sfm: Seq[FileMetrics]): Seq[FileMetrics] = {
+    def filterByDistro(sfm: Seq[FileMetrics]): Seq[FileMetrics] = {
       sfm filter { fm =>
         (fm.filename endsWith ".rpm") &&
           //        fm.lastBatchID.contains("rhel") &&
           //        fm.filename.contains(".el6.")
-          (! fm.filename.contains("i686")) &&
+          (!fm.filename.contains("i686")) &&
           fm.filename.contains(".el7.")
         //        fm.filename.contains(".fc23.")
         //fm.filename.contains(".fc25.")
       }
     }
 
-    def render(p: Table.Props, s: State) = {
-
-      val proxy = p.proxy()
+    def render(p: Table.Props) = {
 
       //    val root = Htmler(Some(Piece.root))
       //    val one = Htmler(Some(Piece.one))
@@ -100,7 +97,7 @@ object Table {
         Row.component(Row.props(size = ""))(
           Col.component(Col.props(sm = ""))(
             Card.component(Card.props(""))(
-              renderStats(s)
+              renderStats(p)
             )
           )
         ),
@@ -113,17 +110,18 @@ object Table {
         ),
         Row.component(Row.props(size = ""))(
           Col.component(Col.props(sm = ""))(
-            renderPackagesHead(s),
-            renderPackagesHeadSizes(s),
-            renderPackages(s)
+            renderPackagesHead(p),
+            renderPackagesHeadSizes(p),
+            renderPackages(p)
           )
         )
       )
       page
     }
 
-    def renderStats(s: State) = {
-      val stats = fileMetricsStats(filterByDistro(s.fileMetrics))
+    def renderStats(p: Table.Props) = {
+      val proxy = p.proxy()
+      val stats = fileMetricsStats(filterByDistro(proxy.fileMetrics))
       <.div(
         <.colgroup(
           <.col(^.width := "10"),
@@ -156,7 +154,7 @@ object Table {
       )
     }
 
-    def renderPackagesHeadSizes(s: State) = {
+    def renderPackagesHeadSizes(p: Table.Props) = {
       <.colgroup(
         <.col(^.width := "10"),
         <.col(^.width := "3%"),
@@ -170,7 +168,7 @@ object Table {
       )
     }
 
-    def renderPackagesHead(s: State) = {
+    def renderPackagesHead(p: Table.Props) = {
       <.thead(
         <.tr(
           <.th(
@@ -190,27 +188,34 @@ object Table {
       )
     }
 
-    def renderPackages(s: State) = {
-      val rows = fileMetricsRows(filterByDistro(s.fileMetrics))
+    def renderPackages(p: Table.Props) = {
+      val proxy = p.proxy()
+      val rows = fileMetricsRows(filterByDistro(proxy.fileMetrics))
       <.tbody(
         rows: _*
       )
     }
 
     def fileMetricsStats(sfm: Seq[FileMetrics]) = {
-      val successCount = sfm count{ _.buildSuccess > 0 }
-      val failCount = sfm count{ _.buildSuccess == 0 }
-      val lastFailCount = sfm count{ _.lastBuildResult != "success" }
+      val successCount = sfm count {
+        _.buildSuccess > 0
+      }
+      val failCount = sfm count {
+        _.buildSuccess == 0
+      }
+      val lastFailCount = sfm count {
+        _.lastBuildResult != "success"
+      }
       (successCount, failCount, lastFailCount)
     }
 
     def fileMetricsRows(sfm: Seq[FileMetrics]): Seq[TagOf[TableRow]] = {
-      val debianPkgs =  sfm sortBy {
+      val debianPkgs = sfm sortBy {
         _.filename
       }
       val data = Stream.from(0) zip debianPkgs map { fm =>
         (fm._1, fm._2.filename, fm._2.buildSuccess, fm._2.buildFail,
-          if(fm._2.buildSuccess>0) fm._2.lastBuildResult else "failred",
+          if (fm._2.buildSuccess > 0) fm._2.lastBuildResult else "failred",
           fm._2.lastError, fm._2.lastBatchID, fm._2.lastRequestID)
       }
 
@@ -219,7 +224,7 @@ object Table {
       } else {
         "danger"
       }
-      var rows = data map { t =>
+      val rows = data map { t =>
         val id = t._1
         val file = t._2
         val success = t._3
@@ -260,10 +265,10 @@ object Table {
   }
 
   def Component = ScalaComponent.builder[Props]("Rows")
-      .initialState(State(page=0, fileMetrics=Seq()))
-      .renderBackend[Backend]
-      .componentDidMount(_.backend.start)  // This fires off request to server for data to render
-      .build
+    //.initialState(State(page = 0, fileMetrics = Seq()))
+    .renderBackend[Backend]
+    // .componentDidMount(_.backend.start)  // This fires off request to server for data to render
+    .build
 
 }
 
