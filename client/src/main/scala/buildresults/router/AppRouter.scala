@@ -2,6 +2,7 @@ package buildresults.router
 
 import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
+
 import buildresults.components.Layout
 import buildresults.diode.AppCircuit
 import page.DashboardPage

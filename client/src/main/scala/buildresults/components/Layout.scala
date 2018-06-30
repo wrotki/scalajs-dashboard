@@ -1,6 +1,7 @@
 package buildresults.components
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import japgolly.scalajs.react.{Callback, _}
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
@@ -23,7 +24,6 @@ import page.DashboardPage
 import config.ConfigApi
 import tableaccess.{ConfigServer, FileMetrics}
 
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object Layout {
   val connection = connect(_.state)
@@ -36,22 +36,6 @@ object Layout {
 
   class Backend(bs: BackendScope[Props, Unit]) {
 
-    //    def getPage = Callback {
-    //      AppCircuit.dispatch(SetLoadingState())
-    //      AppCircuit.dispatch(GetPageContent(Some(PageContent("Some page content"))))
-    //      log.info("Layout::getPage")
-    //
-    //      println("In getPage")
-    //    }
-
-    //    def getFileMetrics = CallbackTo[Future[Seq[FileMetrics]]] {
-    //      AppCircuit.dispatch(SetLoadingState())
-    //      ConfigServer[ConfigApi].getFileMetrics().call() map { fm =>
-    //        log.info("FileMetrics received")
-    //        AppCircuit.dispatch(ClearLoadingState())
-    //        AppCircuit.dispatch(SetFileMetrics(fm))
-    //        fm
-    //      }
     def fetchFileMetrics = CallbackTo[Future[Seq[FileMetrics]]] {
       log.info("FileMetrics requested")
       AppCircuit.dispatch(SetLoadingState())
@@ -70,10 +54,6 @@ object Layout {
 
     def render(props: Props): VdomElement = {
       <.div(
-//        <.div(
-//          ^.cls := "container",
-//          connection(proxy => DashboardPage.Component(DashboardPage.Props(proxy, props.ctl)))
-//        ),
         <.div(^.cls := "container", props.resolution.render()),
         connection(proxy => LoadingIndicator(LoadingIndicator.Props(proxy)))
       )

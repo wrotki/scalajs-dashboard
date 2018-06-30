@@ -56,9 +56,7 @@ object DashboardPage {
   }
 
   val Component = ScalaComponent.builder[Props]("Page")
-      //.initialState(State(page=0, fileMetrics=Seq()))
       .renderBackend[PageBackend]
-//      .componentDidMount(_.backend.start)  // This fires off request to server for data to render
       .build
 
 }

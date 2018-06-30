@@ -1,25 +1,26 @@
 package page
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import org.scalajs.dom
+
 import autowire._
 import boopickle.Default._
-import buildresults.diode._
-import buildresults.router.AppRouter
-import config.ConfigApi
 import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.TagOf
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import org.scalajs.dom
 import org.scalajs.dom.html.{TableRow, TableSection}
+
+import buildresults.diode._
+import buildresults.router.AppRouter
+import config.ConfigApi
 import spa.client.elemental.buttons.Button
 import spa.client.elemental.css.{Table => ElementalTable}
 import spa.client.elemental.misc.Card
 import spa.client.elemental.grid.{Col, Row}
 import spa.client.logger.log
 import tableaccess.{ConfigServer, FileMetrics}
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object Table {
 
@@ -28,34 +29,12 @@ object Table {
                     ctl: RouterCtl[AppRouter.Page]
                   )
 
-//  case class TableState(
-//                         var isLoading: Boolean,
-//                         var fileMetrics: Seq[FileMetrics]
-//                       )
-
   class Backend($: BackendScope[Table.Props, Unit]) {
-
-//    def updateFileMetrics(fileMetrics: Seq[FileMetrics]): Callback = {
-//      $.setState(State(page = 0, fileMetrics))
-//    }
-
-    //    def start = Callback.future {
-    //      val ret = ConfigServer[ConfigApi].getFileMetrics().call() map {
-    //        fm => {
-    //          log.info("FileMetrics received")
-    //
-    //          AppCircuit.dispatch(ClearLoadingState())
-    //          AppCircuit.dispatch(SetFileMetrics(fm))
-    //          updateFileMetrics(fm)
-    //        }
-    //      }
-    //      ret
-    //    }
 
     def filterByDistro(sfm: Seq[FileMetrics]): Seq[FileMetrics] = {
       sfm filter { fm =>
         (fm.filename endsWith ".rpm") &&
-          fm.lastBatchID.contains("centos") &&
+          fm.lastBatchID.contains("centos_rpm_7") &&
           //        fm.filename.contains(".el6.")
           (!fm.filename.contains("i686")) &&
           fm.filename.contains(".el7.")

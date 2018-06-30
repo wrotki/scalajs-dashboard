@@ -21,8 +21,6 @@ object SPAMain {
 
     val routerTarget = dom.document.getElementById("root")
     AppRouter.router().renderIntoDOM(routerTarget)
-
-    // val lft: Int => Option[Int] = Seq(1,2,3).lift
   }
 
 }
