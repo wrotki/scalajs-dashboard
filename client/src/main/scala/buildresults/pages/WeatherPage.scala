@@ -16,6 +16,7 @@ import buildresults.models.PageContent
 import buildresults.router.AppRouter
 import buildresults.diode.AppState
 import buildresults.diode.AppCircuit
+import page.DashboardPage
 import spa.client.logger.log
 
 
@@ -137,7 +138,7 @@ object WeatherPage {
           ^.className := "weather-page__label",
           "Enter city to get weather: "
         ),
-//        <.div(
+        //        <.div(
 //          ^.marginBottom := 10.px,
 //          select
 //        ),

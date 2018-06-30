@@ -4,7 +4,7 @@ import org.scalajs.dom
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExportTopLevel,JSExport}
 
-import page.Page
+import page.DashboardPage
 import spa.client.logger._
 import buildresults.router.AppRouter
 
@@ -17,7 +17,7 @@ object SPAMain {
     println("Hello world!")
 
 //    val aceTarget = dom.document.getElementById("ace")
-//    Page.component.renderIntoDOM(aceTarget)
+//    Page().renderIntoDOM(aceTarget)
 
     val routerTarget = dom.document.getElementById("root")
     AppRouter.router().renderIntoDOM(routerTarget)

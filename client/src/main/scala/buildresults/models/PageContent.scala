@@ -1,5 +1,8 @@
 package buildresults.models
 
-case class PageContent (
-                       text: String = "PageContent"
-                       )
+import tableaccess.FileMetrics
+
+case class PageContent(
+                        text: String = "PageContent",
+                        fileMetrics: Seq[FileMetrics] = Seq()
+                      )

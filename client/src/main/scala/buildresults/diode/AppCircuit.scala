@@ -8,6 +8,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
   def initialModel = AppModel(
     AppState(
       pageContent = None: Option[PageContent],
+      fileMetrics = null,
       isLoading = false
     )
   )
@@ -29,5 +30,6 @@ class AppHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW
     case SetLoadingState() => updated(value.copy(isLoading = true))
     case ClearLoadingState() => updated(value.copy(isLoading = false))
     case GetPageContent(pageContent) => updated(value.copy(pageContent = pageContent))
+    case SetFileMetrics(fileMetrics) => updated(value.copy(fileMetrics = fileMetrics))
   }
 }

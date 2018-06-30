@@ -15,6 +15,7 @@ import buildresults.diode.AppCircuit.connect
 import buildresults.diode._
 import buildresults.models.PageContent
 import buildresults.router.AppRouter.Page
+import page.DashboardPage
 import spa.client.logger.log
 
 object Layout {
@@ -27,60 +28,61 @@ object Layout {
                   )
 
   class Backend(bs: BackendScope[Props, Unit]) {
-//    val host: String = Config.AppConfig.apiHost
+    //    val host: String = Config.AppConfig.apiHost
 
-//    def getUserResponse = CallbackTo[Future[UserResponse]] {
-//      AppCircuit.dispatch(SetLoadingState())
-//      dom.ext.Ajax
-//        .get(url=s"$host/user-info", withCredentials=true)
-//        .map {xhr =>
-//          val option = decode[UserResponse](xhr.responseText)
-//          option match {
-//            case Left(failure) => UserResponse(GithubUser(), List.empty[OpenWeatherBaseCity])
-//            case Right(data) => data
-//          }
-//        }
-//    }
-//
-//    def dispatchUserInfo(userInfoFuture: Future[UserResponse]) = CallbackTo[Future[UserResponse]] {
-//      userInfoFuture.map {userInfo =>
-//        val userInfoOption = if (userInfo.user.id != -1) Some(userInfo) else None
-//        AppCircuit.dispatch(ClearLoadingState())
-//        AppCircuit.dispatch(GetUserInfo(userInfoOption))
-//        userInfo
-//      }
-//    }
-//
-//    def loadAndDispatchCitiesWeather(userInfoFuture: Future[UserResponse]) = Callback {
-//      userInfoFuture.map { userInfo =>
-//        userInfo.cities.map {city =>
-//          dom.ext.Ajax.get(url=s"$host/weather-city?id=${city.id}").map {xhr =>
-//            val option = decode[WeatherResponse](xhr.responseText)
-//            option match {
-//              case Left(_) => None
-//              case Right(data) => AppCircuit.dispatch(GetWeatherForFavCity(data))
-//            }
-//          }
-//        }
-//      }
-//    }
+    //    def getUserResponse = CallbackTo[Future[UserResponse]] {
+    //      AppCircuit.dispatch(SetLoadingState())
+    //      dom.ext.Ajax
+    //        .get(url=s"$host/user-info", withCredentials=true)
+    //        .map {xhr =>
+    //          val option = decode[UserResponse](xhr.responseText)
+    //          option match {
+    //            case Left(failure) => UserResponse(GithubUser(), List.empty[OpenWeatherBaseCity])
+    //            case Right(data) => data
+    //          }
+    //        }
+    //    }
+    //
+    //    def dispatchUserInfo(userInfoFuture: Future[UserResponse]) = CallbackTo[Future[UserResponse]] {
+    //      userInfoFuture.map {userInfo =>
+    //        val userInfoOption = if (userInfo.user.id != -1) Some(userInfo) else None
+    //        AppCircuit.dispatch(ClearLoadingState())
+    //        AppCircuit.dispatch(GetUserInfo(userInfoOption))
+    //        userInfo
+    //      }
+    //    }
+    //
+    //    def loadAndDispatchCitiesWeather(userInfoFuture: Future[UserResponse]) = Callback {
+    //      userInfoFuture.map { userInfo =>
+    //        userInfo.cities.map {city =>
+    //          dom.ext.Ajax.get(url=s"$host/weather-city?id=${city.id}").map {xhr =>
+    //            val option = decode[WeatherResponse](xhr.responseText)
+    //            option match {
+    //              case Left(_) => None
+    //              case Right(data) => AppCircuit.dispatch(GetWeatherForFavCity(data))
+    //            }
+    //          }
+    //        }
+    //      }
+    //    }
 
-    def getFakePage = Callback {
+    def getPage = Callback {
       AppCircuit.dispatch(SetLoadingState())
-      log.info("Layout::getFakePage")
+      AppCircuit.dispatch(GetPageContent(Some(PageContent("Some page content"))))
+      log.info("Layout::getPage")
 
-      println( "In getFakePage")
+      println("In getPage")
     }
 
     //    def mounted: Callback = getUserResponse >>= dispatchUserInfo >>= loadAndDispatchCitiesWeather
-    def mounted: Callback = getFakePage
+    def mounted: Callback = getPage
 
     def render(props: Props): VdomElement = {
       <.div(
-        <.div(
-          ^.cls := "container",
-          connection(proxy => Header(Header.Props(proxy, props.ctl, props.resolution)))
-        ),
+//        <.div(
+//          ^.cls := "container",
+//          connection(proxy => DashboardPage.Component(DashboardPage.Props(proxy, props.ctl)))
+//        ),
         <.div(^.cls := "container", props.resolution.render()),
         connection(proxy => LoadingIndicator(LoadingIndicator.Props(proxy)))
       )
