@@ -1,4 +1,4 @@
-BigBang problems investigation helper tool
+Example dashboard tool
 ------------------------------------------
 
 
@@ -8,7 +8,7 @@ Usage
 Have your AWS creds in $HOME/.aws . Then:
 
 ```
-docker run -ti --rm -v "$PWD:/src" -v "$HOME/.ivy2":/root/.ivy2 -v "$HOME/.aws":/root/.aws -p 9000:9000 internal.hub.polyverse.io/bigbang-dashboard  bash -c "cd /src ; sbt run"
+docker run -ti --rm -v "$PWD:/src" -v "$HOME/.ivy2":/root/.ivy2 -v "$HOME/.aws":/root/.aws -p 9000:9000 sjs-dashboard  bash -c "cd /src ; sbt run"
 ```
 
 
@@ -18,7 +18,7 @@ Build
 -----
 
 ```
-docker build -t internal.hub.polyverse.io/bigbang-dashboard .
+docker build -t sjs-dashboard .
 ```
 
 
