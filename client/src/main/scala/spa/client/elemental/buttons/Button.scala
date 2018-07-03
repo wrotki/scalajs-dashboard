@@ -8,7 +8,6 @@ import scala.scalajs.js.{UndefOr, Function0 => JFn0}
 
 object Button {
 
-//  Commented outJSImport("./elemental/less/elemental.less", JSImport.Default)
   @JSImport("./node_modules/elemental/less/elemental.less", JSImport.Default)
   @js.native
   object ElementalCss extends js.Object
