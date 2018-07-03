@@ -7,7 +7,8 @@ import scala.scalajs.js.annotation.JSImport
 
 object Card {
 
-  @JSImport("!style-loader!css-loader!less-loader!elemental/less/elemental.less", JSImport.Default)
+  //  Commented outJSImport("./elemental/less/elemental.less", JSImport.Default)
+  @JSImport("./node_modules/elemental/less/elemental.less", JSImport.Default)
   @js.native
   object ElementalCss extends js.Object
 

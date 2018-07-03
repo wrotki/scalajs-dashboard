@@ -1,43 +1,80 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
+// https://survivejs.com/webpack/developing/composing-configuration/
+const merge = require("webpack-merge");
+const path = require('path');
 
-module.exports = require('./scalajs.webpack.config');
-//module.exports.entry["elementalcss"] = "/Users/mariusz/concurix/goworkspace/src/github.com/wrotki/scalajs-spa-playground/client/target/scala-2.11/scalajs-bundler/main/node_modules/elemental/less/elemental.less"
+// https://github.com/sciabarra/sample-scajajs-react-bootstrap-with-bundler
 
-console.log("Entry: ", JSON.stringify(module.exports.entry))
+console.log("my.custom.webpack.config");
+const baseConfig = merge([require('./scalajs.webpack.config')]);
+console.log("baseConfig: ", JSON.stringify(baseConfig));
 
-//  "entry": {
-//    "client-fastopt": "/Users/mariusz/concurix/goworkspace/src/github.com/wrotki/scalajs-spa-starter/client/target/scala-2.11/scalajs-bundler/main/fastopt-launcher.js"
-//  },
+const plugins = [
+    new webpack.LoaderOptionsPlugin({
+            debug: true
+        })
+];
 
-// And then modify `module.exports` to extend the configuration
-//module.exports.plugins = (module.exports.plugins || []).concat([
-//  new UglifyJsPlugin({ sourceMap: module.exports.devtool === 'source-map' })
-//]);
+const elementalEntry = {
+    entry: {
+        elementalcss: path.resolve(__dirname, "node_modules/elemental/less/elemental.less")
+    }
+};
 
-//module.exports.plugins = (module.exports.plugins || []).concat([
-//  new webpack.LoaderOptionsPlugin({
-//    debug: true
-//  })])
-module.exports.plugins = [
-  new webpack.LoaderOptionsPlugin({
-    debug: true
-  })]
+const useLoaders = [
+    {
+        loader: 'style-loader' // creates style nodes from JS strings
+    }
+    ,
+    {
+        loader: 'css-loader', // translates CSS into CommonJS
+        options: {
+            exclude: [/\.js/],
+           sourceMap: true
+        }
+    }
+    ,
+    {
+        loader: 'less-loader', // compiles Less to CSS
+        options: {
+           paths: [
+               path.resolve(__dirname, "node_modules/elemental/less")
+           ],
+           sourceMap: true
+        }
+    }
+];
 
-module.exports.module = {
-        loaders: [
-          { test: /\.less/, loader: 'style-loader!css-loader!less-loader' }
-        ]
-}
+const rules = [
+    {
+      test: /\.less$/,
+      use:useLoaders
+    }
+    ,
+    {
+      test: /\.js$/,
+      use:useLoaders
+    }
+];
 
-//module.exports.module = {
-//        rules: [{
-//            test: /\.less$/,
-//            use: [{
-//                loader: "style-loader" // creates style nodes from JS strings
-//            }, {
-//                loader: "css-loader" // translates CSS into CommonJS
-//            }, {
-//                loader: "less-loader" // compiles Less to CSS
-//            }]
-//        }]
-//}
+module.exports = merge([
+        merge([ baseConfig/*, elementalEntry*/]),
+        {
+            plugins:  plugins,
+            module: {
+                rules: [
+                    {
+                        test: /\.less$/,
+                        use: [
+                            "style-loader",
+                            "css-loader",
+                            "less-loader"
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+);
+
+console.log("Webpack config: \n" + JSON.stringify(module.exports, null, 4) );

@@ -32,16 +32,20 @@ object Settings {
     val scalajsScripts = "1.1.2"
     val react = "15.6.1"
     val reactAddonsTransitionGroup = "15.6.2"
-    val webpack = "3.6.0"
+    val webpack = "3.12.0"
+    val webpackMerge = "^4.1.3"
     val less = "2.7.2"
-    val lessLoader = "4.0.5"
+    val lessLoader = "^4.1.0"
+    val sass = "^4.0.0"
+    val sassLoader = "^6.0.5"
     val cssLoader = "0.28.7"
-    val styleLoader = "0.19.0"
+    val styleLoader = "^0.19.0"
     val log4javascript = "1.4.15"
     val mathjs = "3.13.3"
     val reactAce = "5.0.1"
     val brAce = "0.10.0"
     val elemental = "0.6.1"
+    val concatWithSourcemaps = "^1.0.6"
   }
 
   /**
@@ -105,8 +109,11 @@ object Settings {
     "react-dom" -> versions.react,
     "react-addons-css-transition-group" -> versions.reactAddonsTransitionGroup,
     "webpack" -> versions.webpack,
+    "webpack-merge" -> versions.webpackMerge,
     "less" -> versions.less,
     "less-loader" -> versions.lessLoader,
+    "node-sass" -> versions.sass,
+    "sass-loader" -> versions.sassLoader,
     "css-loader" -> versions.cssLoader,
     "style-loader" -> versions.styleLoader,
     "log4javascript" -> versions.log4javascript,
@@ -114,6 +121,10 @@ object Settings {
     "font-awesome" -> versions.fontAwesome,
     "brace" -> versions.brAce,
     "react-ace" -> versions.reactAce,
-    "elemental" -> versions.elemental
+    "elemental" -> versions.elemental,
+    "concat-with-sourcemaps" -> versions.concatWithSourcemaps
+  )
+  val npmDevDependencies = Seq(
+    "concat-with-sourcemaps" -> versions.concatWithSourcemaps
   )
 }

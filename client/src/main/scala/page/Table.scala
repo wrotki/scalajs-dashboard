@@ -9,8 +9,8 @@ import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.TagOf
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
-import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import org.scalajs.dom.html.{TableRow, TableSection}
+import japgolly.scalajs.react.{BackendScope, ScalaComponent}
+import org.scalajs.dom.html.{TableRow}
 
 import buildresults.diode._
 import buildresults.router.AppRouter
@@ -20,7 +20,7 @@ import spa.client.elemental.css.{Table => ElementalTable}
 import spa.client.elemental.misc.Card
 import spa.client.elemental.grid.{Col, Row}
 import spa.client.logger.log
-import tableaccess.{ConfigServer, FileMetrics}
+import tableaccess.{FileMetrics}
 
 object Table {
 
@@ -38,12 +38,13 @@ object Table {
           //        fm.filename.contains(".el6.")
           (!fm.filename.contains("i686")) &&
           fm.filename.contains(".el7.")
-        //        fm.filename.contains(".fc23.")
         //fm.filename.contains(".fc25.")
       }
     }
 
     def render(p: Table.Props) = {
+
+      log.info("Table.render start now")
 
       //    val root = Htmler(Some(Piece.root))
       //    val one = Htmler(Some(Piece.one))
@@ -51,7 +52,7 @@ object Table {
       //
       //    val combined = root ++ one ++ two
 
-      import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
+//      import Htmler._ // implicit converter Htmler => TagOf[HTMLElement]
 
       val statsHead = Card.component(Card.props(""))(<.div("Stats"))
       val buildHead = Card.component(Card.props(""))(<.div("Build"))

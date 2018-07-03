@@ -62,8 +62,9 @@ lazy val client = (project in file("client"))
     useYarn := true,
     npmDependencies in Compile ++= Settings.npmDependencies,
     // Use a different Webpack configuration file for production
+    // https://github.com/scalacenter/scalajs-bundler/blob/master/manual/src/ornate/cookbook.md
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "my.custom.webpack.config.js"),
-    version in webpack := "3.6.0"
+    version in webpack := "3.12.0"
   )
 
 lazy val server = (project in file("server"))
@@ -92,4 +93,4 @@ resolvers in server += Resolver.bintrayRepo("ticofab", "maven")
 libraryDependencies in server += guice
 
 // loads the Play server project at sbt startup
-// TODO uncomment: // onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value
+onLoad in Global ~= (_ andThen ("project server" :: _))
