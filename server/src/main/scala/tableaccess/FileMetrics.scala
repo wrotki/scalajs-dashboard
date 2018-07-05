@@ -3,6 +3,29 @@ package tableaccess
 import com.github.dwhjames.awswrap.dynamodb
 import com.github.dwhjames.awswrap.dynamodb.{AttributeValue, _}
 
+// https://www.scanamo.org/
+
+object FileMetricsJson {
+  val exampleRow =
+    """
+      |{
+      |  "Arch": "x86_64",
+      |  "Component": "os-templates",
+      |  "CreateDate": "2018-06-25T23:02:36.468810651Z",
+      |  "Format": "rpm",
+      |  "ID": "staging_centos_rpm_7_x86--64_os-templates_NWC",
+      |  "LastMaintenance": "2018-07-03T01:34:25Z",
+      |  "Project": "centos",
+      |  "Release": "7",
+      |  "Revision": 4,
+      |  "State": "indexing",
+      |  "Timestamp": "2018-07-03T01:34:26Z",
+      |  "TTLExpire": "2018-06-25T23:02:36.468812823Z",
+      |  "Type": "centos_rpm_7_x86--64_os-templates"
+      |}
+    """.stripMargin
+}
+
 case class FileMetrics(
                         buildFail: Long,
                         buildSuccess: Long,

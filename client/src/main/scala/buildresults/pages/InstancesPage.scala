@@ -1,4 +1,4 @@
-package page
+package buildresults.pages
 
 import buildresults.components.HeaderNav
 import japgolly.scalajs.react.{BackendScope, Callback, CallbackTo, ScalaComponent}
@@ -13,7 +13,7 @@ import spa.client.elemental.buttons.Button
 import spa.client.elemental.misc.Card
 import spa.client.logger.log
 
-object DashboardPage {
+object InstancesPage {
 
   case class Props (
                      proxy: ModelProxy[AppState],
@@ -21,14 +21,14 @@ object DashboardPage {
                    )
 
   case class PageState(
-                    var isLoading: Boolean,
-                    var fileMetrics: Seq[FileMetrics]
-                  )
+                        var isLoading: Boolean,
+                        var fileMetrics: Seq[FileMetrics]
+                      )
 
   class PageBackend($: BackendScope[Props, Unit]) {
 
     def render(p: Props) = {
-      log.info("Dashboard rendering")
+      log.info("InstancesPage rendering")
       val proxy = p.proxy()
       <.div(
         //    <.div("BEFORE"),
@@ -36,14 +36,14 @@ object DashboardPage {
         //    <.div("AFTER"),
         //    row,
         HeaderNav(HeaderNav.Props(p.proxy, p.ctl)),
-        Table.Component(Table.Props(p.proxy, p.ctl))
+        <.div("Nothing")
       )
     }
   }
 
   val Component = ScalaComponent.builder[Props]("Page")
-      .renderBackend[PageBackend]
-      .build
+    .renderBackend[PageBackend]
+    .build
 
 }
 
