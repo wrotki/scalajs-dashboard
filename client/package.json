@@ -2,7 +2,7 @@
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.0",
     "brace": "0.10.0",
     "concat-with-sourcemaps": "^1.0.6",
     "css-loader": "0.28.7",
@@ -26,7 +26,7 @@
     "source-map-loader": "0.2.1",
     "webpack": "4.14.0",
     "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "2.11.1"
+    "webpack-dev-server": "3.1.11"
   },
   "scripts": {
     "start": "webpack --config my.custom.webpack.config.js"
