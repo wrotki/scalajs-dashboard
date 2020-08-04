@@ -27,7 +27,7 @@ object Settings {
     val scalaDom = "0.9.2"
 
     val uTest = "0.4.4"
-    val bootstrap = "3.4.0"
+    val bootstrap = "3.4.1"
     val fontAwesome = "4.7.0"
     val scalajsScripts = "1.1.2"
     val react = "15.6.1"

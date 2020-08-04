@@ -2,7 +2,7 @@
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
-    "bootstrap": "3.4.0",
+    "bootstrap": "3.4.1",
     "brace": "0.10.0",
     "concat-with-sourcemaps": "^1.0.6",
     "css-loader": "0.28.7",
